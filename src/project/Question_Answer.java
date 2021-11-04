@@ -15,5 +15,17 @@ public abstract class Question_Answer {
 	
 	public abstract void setChoices();
 	
+	public String getQuestion() {
+		return this.question;
+	}
+	public String getAnswer() {
+		return this.answer;
+	}
 	
+	public void printChoices() {
+		int i;
+		for(i = 0; i < choices.length; i++) {
+			System.out.println(i + ") " + choices[i]);
+		}
+	}
 }

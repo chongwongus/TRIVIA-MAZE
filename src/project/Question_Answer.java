@@ -1,6 +1,6 @@
 package project;
 
-public abstract class Question_Answer {
+public class Question_Answer {
 	private String question;
 	private String[] choices;
 	private String answer;
@@ -13,7 +13,11 @@ public abstract class Question_Answer {
 		this.answer = theAnswer;
 	}
 	
-	public abstract void setChoices();
+	public void setChoices(String[] theQuestions) {
+		for(int i = 0; i < theQuestions.length; i++) {
+			this.choices[i] = theQuestions[i];
+		}
+	};
 	
 	public String getQuestion() {
 		return this.question;

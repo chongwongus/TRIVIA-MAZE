@@ -7,8 +7,8 @@ public final class Room {
 	
 	/**
 	 * This is a test constructor TO BE CHANGED later on.
+	 * Should read in from SQLite DB to put in question, choices, and answer.
 	 */
-	
 	public Room() {
 		
 		String[] theChoices = {"1. Because.", "2. Why not?", "3. Life", "4. 42"};
@@ -16,6 +16,10 @@ public final class Room {
 		myQA.setQuestion("Test Q: Why?");
 		myQA.setChoices(theChoices);
 		myQA.setAnswer("4. 42");
+	}
+	
+	public Question_Answer getRoomQA() {
+		return this.myQA;
 	}
 	
 	public void displayRoom() {

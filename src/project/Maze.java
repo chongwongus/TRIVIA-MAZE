@@ -1,5 +1,4 @@
-package project;
-
+package Structures;
 import java.util.Scanner;
 
 public final class Maze {

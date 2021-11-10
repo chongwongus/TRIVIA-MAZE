@@ -1,5 +1,4 @@
-package project;
-
+package Structures;
 public final class Room {
 	private Question_Answer myQA = new Question_Answer();
 	private String userAnswer;
@@ -26,7 +25,7 @@ public final class Room {
 		System.out.println("Welcome to room # (insert number)");
 		System.out.println("In order to proceed, you must answer this question correctly.");
 		System.out.println(myQA.getQuestion());
-		myQA.printChoices();
+		System.out.println(myQA.getChoices());
 	}
 	
 	private boolean isCorrect() {

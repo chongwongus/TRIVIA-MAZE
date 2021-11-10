@@ -1,5 +1,4 @@
-package project;
-
+package Structures;
 public final class TriviaMaze {
 
 }

@@ -7,6 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * GUI for Trivia Maze (currently WIP)
+ * @author Roland Hanson
+ * @version 0.1
+ */
 public class TriviaMazeGUI extends JFrame {
 
 	private JPanel contentPane;
@@ -31,6 +36,7 @@ public class TriviaMazeGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public TriviaMazeGUI() {
+		setTitle("Trivia Maze");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

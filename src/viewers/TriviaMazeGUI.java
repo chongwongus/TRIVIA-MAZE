@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 /**
  * GUI for Trivia Maze (currently WIP)
  * @author Roland Hanson
- * @version 0.1
+ * @version 1.0
  */
 public class TriviaMazeGUI extends JFrame {
 

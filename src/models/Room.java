@@ -6,18 +6,28 @@ import java.util.Map;
 
 public final class Room {
 
-	public Question_Answer myQA = new Question_Answer();
-	public Map<String, String> qNA = new HashMap<>(); 
-	public QuestionDB dataBase = new QuestionDB(qNA); 
-	private ArrayList<String> questions = new ArrayList<>();
+	private int myX;
+	private int myY;
+	private Map<String, Door> myDoorMap; 
+	
+	public Room() {
+		myDoorMap = new HashMap<String, Door>();
+	}
 	
 	/**
-	 * Reads from Database and assigns the Q and A to myQA
+	 * I'm thinking of using the row and col to figure out what position the room is in
+	 * to determine how many doors are needed (e.g corner edge needs 2, free needs 4, side
+	 * needs 3. 
+	 * @param theX
+	 * @param theY
+	 * @param theRow 
+	 * @param theCol
 	 */
-	public Room() {
-		questions.addAll(qNA.keySet());
-		myQA.setQuestion(questions.get(0));
-		myQA.setAnswer(qNA.get(myQA.getQuestion()));
+	public Room(int theX, int theY, int theRow, int theCol) {
+		this();
+		myX = theX;
+		myY = theY;
+		
 	}
 	
 }

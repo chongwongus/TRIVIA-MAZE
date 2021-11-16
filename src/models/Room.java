@@ -30,4 +30,8 @@ public final class Room {
 		
 	}
 	
+	private void doorSetUp() {
+		
+	}
+	
 }

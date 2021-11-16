@@ -2,13 +2,10 @@ package viewers;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Graphics;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
@@ -22,7 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * GUI for Trivia Maze (currently WIP) Built using windowbuilder
+ * GUI for Trivia Maze (currently WIP)
  * @author Roland Hanson
  * @version 1.2
  */
@@ -42,19 +39,11 @@ public class TriviaMazeGUI extends JFrame {
 	JMenu mnFile;
 	JMenuItem mntmSave;
 	JMenuItem mntmLoad;
-	JMenuItem mntmExit;
-	JMenu mnHelp;
-	JMenuItem mntmAbout;
-	JMenuItem mntmInstructions;
-	JMenuItem mntmCheats;
-	JPanel mazePanel;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// Initialize maze
-		Maze test = new Maze();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -81,22 +70,22 @@ public class TriviaMazeGUI extends JFrame {
 		
 		btnN = new JButton("N");
 		btnN.addActionListener(new goNorth());
-		btnN.setBounds(459, 67, 43, 23);
+		btnN.setBounds(459, 137, 43, 23);
 		contentPane.add(btnN);
 		
 		btnE = new JButton("E");
 		btnE.addActionListener(new goEast());
-		btnE.setBounds(484, 101, 43, 23);
+		btnE.setBounds(484, 171, 43, 23);
 		contentPane.add(btnE);
 		
 		btnS = new JButton("S");
 		btnS.addActionListener(new goSouth());
-		btnS.setBounds(459, 135, 43, 23);
+		btnS.setBounds(459, 205, 43, 23);
 		contentPane.add(btnS);
 		
 		btnW = new JButton("W");
 		btnW.addActionListener(new goWest());
-		btnW.setBounds(436, 101, 43, 23);
+		btnW.setBounds(436, 171, 43, 23);
 		contentPane.add(btnW);
 		
 		menuBar = new JMenuBar();
@@ -113,44 +102,6 @@ public class TriviaMazeGUI extends JFrame {
 		
 		mntmLoad = new JMenuItem("Load");
 		mnFile.add(mntmLoad);
-		
-		mntmExit = new JMenuItem("Exit");
-		mntmExit.addActionListener(new exitGame());
-		mnFile.add(mntmExit);
-		
-		mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-		
-		mntmAbout = new JMenuItem("About");
-		mnHelp.add(mntmAbout);
-		
-		mntmInstructions = new JMenuItem("Instructions");
-		mnHelp.add(mntmInstructions);
-		
-		mntmCheats = new JMenuItem("Cheats");
-		mnHelp.add(mntmCheats);
-		
-		mazePanel = new mazePanel();
-		mazePanel.setBounds(10, 33, 416, 195);
-		contentPane.add(mazePanel);
-	}
-	
-	/**
-	 * Displays the maze
-	 * @author Roland Hanson
-	 *
-	 */
-	private class mazePanel extends JPanel{
-		
-		private mazePanel() {
-			
-		}
-		
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawString("Test", 100, 100);
-		}
-		
 	}
 	
 	/**
@@ -208,14 +159,4 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
-	/**
-	 * Exits the program
-	 * @author Roland Hanson
-	 *
-	 */
-	private class exitGame implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
-			System.exit(EXIT_ON_CLOSE);
-		}
-	}
 }

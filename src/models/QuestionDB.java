@@ -1,71 +1,87 @@
 package models;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
 
 import org.sqlite.SQLiteDataSource;
 
 /**
  * Sets up the question Database
  * Note: Don't know if this class is necessary, this class may be temporary
- * @author Roland Hanson
+ * @author Roland Hanson, Richard Le
  *
  */
 public class QuestionDB {
-
-	SQLiteDataSource ds = null;
 	
 	public QuestionDB() {
 		
 	}
 	
-	public QuestionDB(Map <String, String> questions) {
-		// Creates Question table
-		String query = "CREATE TABLE IF NOT EXISTS questions ( " + 
-				"QUESTION TEXT NOT NULL, " + 
-				"ANSWER TEXT NOT NULL )";
-		try ( Connection conn = ds.getConnection();
-                Statement stmt = conn.createStatement(); ) {
-              int rv = stmt.executeUpdate( query );
-              System.out.println( "executeUpdate() returned " + rv );
-          } catch ( SQLException e ) {
-              e.printStackTrace();
-              System.exit( 0 );
-          }
-		
-		// Note: This is temporary, we would most likely add questions into the DB file itself instead of manually through here
-		String statement = "INSERT INTO questions ( QUESTION, ANSWER ) VALUES ( 'What is the meaning of life?', '42' )";
-		
-		try ( Connection conn = ds.getConnection();
-	              Statement stmt = conn.createStatement(); ) {
-	            int rv = stmt.executeUpdate( statement );
-	        } catch ( SQLException e ) {
-	            e.printStackTrace();
-	            System.exit( 0 );
-	        }
-		
-		 query = "SELECT * FROM questions";
-
-	        try ( Connection conn = ds.getConnection();
-	              Statement stmt = conn.createStatement(); ) {
-	            
-	            ResultSet rs = stmt.executeQuery(query);
-	            
-	            //walk through each 'row' of results, grab data by column/field name
-	            // and assign it to the questions map
-	            while ( rs.next() ) {
-	                String question = rs.getString( "QUESTION" );
-	                String answer = rs.getString( "ANSWER" );
-	                questions.put(question, answer);
-	            }
-	        } catch ( SQLException e ) {
-	            e.printStackTrace();
-	            System.exit( 0 );
-	        }
-		
+	private Connection connect() {
+		String url = "jdbc:sqlite:sqlDBs/TriviaMazeDB.db";
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(url);
+			System.out.println("Connection to SQLite has been established.");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return conn;
 	}
 	
+	
+	
+	public void selectMC() {
+		String sql = "SELECT Question, Choice1, Choice2, Choice3, Choice4, Answer FROM TriviaMC";
+		
+		try (Connection conn = this.connect(); 
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql)) {
+				
+			// loop thru result set
+			while(rs.next()) {
+				System.out.println(rs.getString("Question") + "\t" +
+								   rs.getString("Choice1") + "\t" + 
+								   rs.getString("Choice2") + "\t" + 
+								   rs.getString("Choice3") + "\t" + 
+								   rs.getString("Choice4") + "\t" + 
+								   rs.getString("Answer"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void selectTF() {
+		String sql = "SELECT Question, CHOICE1, CHOICE2, Answer FROM TriviaTF";
+		
+		try (Connection conn = this.connect(); 
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql)) {
+				
+			// loop thru result set
+			while(rs.next()) {
+				System.out.println(
+								   rs.getString("Question") + "\t" +
+								   rs.getString("CHOICE1") + "\t" + 
+								   rs.getString("CHOICE2") + "\t" + 
+								   rs.getString("Answer"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+	}
+	
+	public static void main(String[] theArgs) {
+		QuestionDB qdb = new QuestionDB();
+		System.out.println("Reading M.C. Questions . . .");
+		qdb.selectMC();
+		System.out.println("Reading T.F. Questions . . .");
+		qdb.selectTF();
+	}
+		
 }

@@ -2,7 +2,7 @@ package models;
 
 /**
  * Unlocked or locked depending on the outcome of the users answer 
- * @author Roland Hanson, Jason
+ * @author Roland Hanson
  *
  */
 public class Door {

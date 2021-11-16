@@ -10,6 +10,7 @@ public final class Room {
 	private int myY;
 	private Map<String, Door> myDoorMap; 
 	
+	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();
 	}
@@ -27,10 +28,6 @@ public final class Room {
 		this();
 		myX = theX;
 		myY = theY;
-		
-	}
-	
-	private void doorSetUp() {
 		
 	}
 	

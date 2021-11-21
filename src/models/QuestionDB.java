@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.sqlite.SQLiteDataSource;
 
@@ -20,8 +22,8 @@ public class QuestionDB {
 		
 	}
 	
-	private Connection connect() {
-		String url = "jdbc:sqlite:sqlDBs/TriviaMazeDB.db";
+	private static Connection connect() {
+		String url = "jdbc:sqlite:sqlDBs/TriviaMazeDBSQLite.db";
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url);
@@ -34,54 +36,79 @@ public class QuestionDB {
 	
 	
 	
-	public void selectMC() {
+	/**
+	 * Creates a list from the Multiple Choice questions table.
+	 * Connects to database, then loops through the specified table.
+	 * While looping, parses each question, choice, and answer into a Question_Answer,
+	 * adding each unique one to the list.
+	 * 
+	 * @param <Question_Answer>
+	 * @return list, a List of Question_Answer
+	 */
+	public static List<Question_Answer> createMultipleChoiceTrivia() {
+		List<Question_Answer> list = new ArrayList<>();
+		
 		String sql = "SELECT Question, Choice1, Choice2, Choice3, Choice4, Answer FROM TriviaMC";
 		
-		try (Connection conn = this.connect(); 
+		try (Connection conn = connect(); 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql)) {
 				
 			// loop thru result set
 			while(rs.next()) {
-				System.out.println(rs.getString("Question") + "\t" +
-								   rs.getString("Choice1") + "\t" + 
-								   rs.getString("Choice2") + "\t" + 
-								   rs.getString("Choice3") + "\t" + 
-								   rs.getString("Choice4") + "\t" + 
-								   rs.getString("Answer"));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public void selectTF() {
-		String sql = "SELECT Question, CHOICE1, CHOICE2, Answer FROM TriviaTF";
-		
-		try (Connection conn = this.connect(); 
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql)) {
+				String question = rs.getString("Question");
+				String answer = rs.getString("Answer");
+				String choice1 = rs.getString("Choice1");
+				String choice2 = rs.getString("Choice2");
+				String choice3 = rs.getString("Choice3");
+				String choice4 = rs.getString("Choice4");
 				
-			// loop thru result set
-			while(rs.next()) {
-				System.out.println(
-								   rs.getString("Question") + "\t" +
-								   rs.getString("CHOICE1") + "\t" + 
-								   rs.getString("CHOICE2") + "\t" + 
-								   rs.getString("Answer"));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+				String[] choices = {choice1, choice2, choice3, choice4};
+				Question_Answer QA = new Question_Answer(question, choices, answer);
+				list.add(QA);
 
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return list;
 	}
 	
-	public static void main(String[] theArgs) {
-		QuestionDB qdb = new QuestionDB();
-		System.out.println("Reading M.C. Questions . . .");
-		qdb.selectMC();
-		System.out.println("Reading T.F. Questions . . .");
-		qdb.selectTF();
+	/**
+	 * Creates a list from the True False questions table.
+	 * Connects to database, then loops through the specified table.
+	 * While looping, parses each question, choice, and answer into a Question_Answer,
+	 * adding each unique one to the list.
+	 * 
+	 * @param <Question_Answer>
+	 * @return list, a List of Question_Answer
+	 */
+	public static List<Question_Answer> createTrueFalseTrivia() {
+		List<Question_Answer> list = new ArrayList<>();
+		
+		String sql = "SELECT Question, CHOICE1, CHOICE2, Answer FROM QuestionTF";
+		
+		try (Connection conn = connect(); 
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql)) {
+				
+			// loop thru result set
+			while(rs.next()) {
+				String question = rs.getString("Question");
+				String answer = rs.getString("Answer");
+				String choice1 = rs.getString("Choice1");
+				String choice2 = rs.getString("Choice2");
+				
+				String[] choices = {choice1, choice2};
+				Question_Answer QA = new Question_Answer(question, choices, answer);
+				list.add(QA);
+
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return list;
 	}
+	
 		
 }

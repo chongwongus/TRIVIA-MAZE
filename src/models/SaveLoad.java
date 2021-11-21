@@ -22,7 +22,7 @@ public class SaveLoad {
 			// Will add once we know what is actually being serialized
 			
 		} catch(IOException e) {
-			
+			System.out.println("Something went wrong with the serialization!");
 		}
 		
 	}

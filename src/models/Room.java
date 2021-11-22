@@ -33,11 +33,20 @@ public final class Room {
 		
 	}
 	
-	public void createDoor(Question_Answer roomTrivia) {
-		door = new Door(roomTrivia);
+	public void createDoor(String theDirection, Question_Answer theRoomTrivia) {
+		myDoorMap.put(theDirection, new Door(theRoomTrivia));
 	}
-	public Door getDoor() {
-		return this.door;
+	
+	public void createExistingDoor(String theDirection, Door theDoor) {
+		myDoorMap.put(theDirection, theDoor);
+	}
+	
+	public Door getDoor(String theDirection) {
+		return myDoorMap.get(theDirection);
+	}
+	
+	public boolean hasDoor(String theDirection) {
+		return myDoorMap.containsKey(theDirection);
 	}
 	
 	public int getX() {

@@ -1,14 +1,15 @@
 package viewers;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-
+import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
@@ -24,8 +25,9 @@ import java.awt.event.ActionEvent;
 
 /**
  * GUI for Trivia Maze (currently WIP) Built using windowbuilder
+ * Note: Direction movements still need to check the boundaries of the maze
  * @author Roland Hanson
- * @version 1.4
+ * @version 1.5
  */
 public class TriviaMazeGUI extends JFrame {
 
@@ -50,6 +52,9 @@ public class TriviaMazeGUI extends JFrame {
 	JMenuItem mntmCheats;
 	JPanel mazePanel;
 	JButton btnStart;
+	
+	Maze maze = new Maze();
+	Player player = new Player();
 
 	/**
 	 * Launch the application.
@@ -143,7 +148,8 @@ public class TriviaMazeGUI extends JFrame {
 	
 	
 	/**
-	 * Displays the maze
+	 * Displays the maze...hopefully
+	 * Currently testing different ways to do this
 	 * @author Roland Hanson
 	 *
 	 */
@@ -154,8 +160,16 @@ public class TriviaMazeGUI extends JFrame {
 		}
 		
 		public void paintComponent(Graphics g) {
+			int bxWidth = 30;
+			int bxHeight = 30;
 			super.paintComponent(g);
-			g.drawString("Test", 100, 100);
+			// Draws the maze (currently only makes a 3x3 grid)
+			for (int i = 0; i < maze.getMyRow() + 2 * bxWidth; i += bxWidth) {
+				for (int j = 0; j < maze.getMyCol() + 2 * bxHeight; j += bxHeight) {
+					g.drawRect(i, j, bxWidth, bxHeight);
+				}
+			}
+			g.drawString("<O>", player.getLocationX(), player.getLocationY());
 		}
 		
 	}
@@ -167,7 +181,9 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class goNorth implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			
+			if (player.getLocationY() > 1) {
+				player.setLocation(player.getLocationX(), player.getLocationY() - 1);
+			}
 		}
 	}
 	
@@ -178,7 +194,9 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class goEast implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (player.getLocationX() < maze.getMyRow() + 2) {
+				player.setLocation(player.getLocationX() + 1, player.getLocationY());
+			}
 		}
 	}
 	
@@ -189,7 +207,9 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class goSouth implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (player.getLocationY() < player.getLocationY() + 2) {
+				player.setLocation(player.getLocationX(), player.getLocationY() + 1);
+			}
 		}
 	}
 	
@@ -200,7 +220,9 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (player.getLocationX() > 1) {
+				player.setLocation(player.getLocationX() - 1, player.getLocationY());
+			}
 		}
 	}
 	
@@ -234,11 +256,11 @@ public class TriviaMazeGUI extends JFrame {
 	private class startGame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Initialize maze & player
-			Maze maze = new Maze();
-			Player player = new Player(maze.getMyRow(), maze.getMyCol());
 			maze.initializeRooms();
 			maze.initializeRoomQuestions();
+			player.setLocation(1, 1);
 			btnStart.setVisible(false);
+			mazePanel.repaint();
 		}
 	}
 }

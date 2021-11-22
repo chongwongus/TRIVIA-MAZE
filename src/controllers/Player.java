@@ -2,13 +2,10 @@ package controllers;
 
 /**
  * Walks through the maze
- * Attempting the Singleton pattern, might change later
  * @author Roland Hanson
  *
  */
 public class Player {
-
-	private static Player uniqueInstance;
 	
 	private int myPlayerX;
 	private int myPlayerY;
@@ -16,7 +13,7 @@ public class Player {
 	/**
 	 * Default constructor
 	 */
-	private Player() {
+	public Player() {
 
 	}
 	
@@ -30,20 +27,18 @@ public class Player {
 		myPlayerY = y;
 	}
 	
-	private static Player getInstance() {
-		if (uniqueInstance == null) {
-			uniqueInstance = new Player();
-		}
-		return uniqueInstance;
-	}
-	
-	private void setLocation(final int x, final int y) {
+	public void setLocation(final int x, final int y) {
 		myPlayerX = x;
 		myPlayerY = y;
 	}
 	
-	private String getLocation() {
-		return myPlayerX + ", " + myPlayerY;
+	public int getLocationX() {
+		return this.myPlayerX;
 	}
+	
+	public int getLocationY() {
+		return this.myPlayerY;
+	}
+
 	
 }

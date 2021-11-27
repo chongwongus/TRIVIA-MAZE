@@ -12,7 +12,6 @@ import org.sqlite.SQLiteDataSource;
 
 /**
  * Sets up the question Database
- * Note: Don't know if this class is necessary, this class may be temporary
  * @author Roland Hanson, Richard Le
  *
  */

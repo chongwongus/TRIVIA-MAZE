@@ -39,6 +39,10 @@ public final class Maze {
 		return this.myCol;
 	}
 
+	public Room[][] getMyMaze(){
+		return this.myMaze;
+	}
+	
 	/**
 	 * initialize all the Rooms in the Maze array. Starts indexing at 1 since we
 	 * have set [0,0] and [ROW+1, COL+1] as our outer boundaries. Sets the X and Y

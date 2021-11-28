@@ -21,7 +21,7 @@ public class Door {
 		myQA = new Question_Answer(theQA.getQuestion(), theQA.getChoices(), theQA.getAnswer());
 	}
 	
-	public boolean isLocked() {
+	public boolean isOpen() {
 		return myOpenDoor;
 	}
 	
@@ -31,6 +31,14 @@ public class Door {
 			myDoorPass = true;
 		}
 		return this.myOpenDoor;
+	}
+	
+	public String[] getChoices() {
+		return myQA.getChoices();
+	}
+	
+	public String getQuestion() {
+		return myQA.getQuestion();
 	}
 	
 	/**

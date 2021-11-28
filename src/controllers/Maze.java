@@ -39,6 +39,11 @@ public final class Maze {
 		return this.myCol;
 	}
 
+	/**
+	 * Method for the GUI to see the room array for the questions
+	 * Note: There might be a better way of doing this, so this might be temporary
+	 * @return myMaze
+	 */
 	public Room[][] getMyMaze(){
 		return this.myMaze;
 	}

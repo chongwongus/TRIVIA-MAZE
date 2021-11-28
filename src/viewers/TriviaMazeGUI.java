@@ -22,12 +22,13 @@ import controllers.Player;
 import models.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
 
 /**
  * GUI for Trivia Maze (currently WIP) Built using windowbuilder
  * Note: Direction movements still need to check the boundaries of the maze
  * @author Roland Hanson
- * @version 1.5
+ * @version 2.0
  */
 public class TriviaMazeGUI extends JFrame {
 
@@ -36,7 +37,7 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 5085020715814436080L;
 	
-	private JPanel contentPane;
+	private static JPanel contentPane;
 	JButton btnN;
 	JButton btnE;
 	JButton btnS;
@@ -54,8 +55,13 @@ public class TriviaMazeGUI extends JFrame {
 	JButton btnStart;
 	
 	Maze myMaze = new Maze();
-	Player myPlayer = new Player();
-	Room[][] myRoomChk;
+	static Player myPlayer = new Player();
+	static Room[][] myRoomChk;
+	static JRadioButton rdbtnChoiceA;
+	static JRadioButton rdbtnChoiceB;
+	static JRadioButton rdbtnChoiceC;
+	static JRadioButton rdbtnChoiceD;
+	static JLabel lblQuestion;
 
 	/**
 	 * Launch the application.
@@ -146,12 +152,75 @@ public class TriviaMazeGUI extends JFrame {
 		btnStart.addActionListener(new startGame());
 		btnStart.setBounds(229, 181, 89, 23);
 		contentPane.add(btnStart);
+		
+		rdbtnChoiceA = new JRadioButton("Choice A");
+		rdbtnChoiceA.addActionListener(new RdbtnChoiceActionListener());
+		rdbtnChoiceA.setBounds(429, 222, 109, 23);
+		contentPane.add(rdbtnChoiceA);
+		rdbtnChoiceA.setVisible(false);
+		
+		rdbtnChoiceB = new JRadioButton("Choice B");
+		rdbtnChoiceB.addActionListener(new RdbtnChoiceActionListener());
+		rdbtnChoiceB.setBounds(429, 248, 109, 23);
+		contentPane.add(rdbtnChoiceB);
+		rdbtnChoiceB.setVisible(false);
+		
+		rdbtnChoiceC = new JRadioButton("Choice C");
+		rdbtnChoiceC.addActionListener(new RdbtnChoiceActionListener());
+		rdbtnChoiceC.setBounds(429, 274, 109, 23);
+		contentPane.add(rdbtnChoiceC);
+		rdbtnChoiceC.setVisible(false);
+		
+		rdbtnChoiceD = new JRadioButton("Choice D");
+		rdbtnChoiceD.addActionListener(new RdbtnChoiceActionListener());
+		rdbtnChoiceD.setBounds(429, 300, 109, 23);
+		contentPane.add(rdbtnChoiceD);
+		rdbtnChoiceD.setVisible(false);
+		
+		lblQuestion = new JLabel("Question");
+		lblQuestion.setBounds(136, 278, 249, 45);
+		contentPane.add(lblQuestion);
+		lblQuestion.setVisible(false);
+		
 	}
 	
+	/**
+	 * Checks to see if the there is a door and if it is locked or not
+	 * If true, a question will be shown in the GUI
+	 * Might need to separate this into two methods
+	 */
+	public static void chkDoor(final String theDirection) {
+		if (myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].hasDoor(theDirection)) {
+			Door doorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
+			String [] choices = doorChk.getChoices();
+			if (doorChk.isOpen() == false) {
+				lblQuestion.setText(doorChk.getQuestion());
+				lblQuestion.setVisible(true);
+				if (choices.length == 2) {
+					rdbtnChoiceA.setText(choices[0]);
+					rdbtnChoiceB.setText(choices[1]);
+					rdbtnChoiceA.setVisible(true);
+					rdbtnChoiceB.setVisible(true);
+				} else {
+					rdbtnChoiceA.setText(choices[0]);
+					rdbtnChoiceB.setText(choices[1]);
+					rdbtnChoiceC.setText(choices[2]);
+					rdbtnChoiceD.setText(choices[3]);
+					rdbtnChoiceA.setVisible(true);
+					rdbtnChoiceB.setVisible(true);
+					rdbtnChoiceC.setVisible(true);
+					rdbtnChoiceD.setVisible(true);
+				}
+				contentPane.repaint();
+			}
+		}
+	}
 	
 	/**
-	 * Displays the maze...hopefully
-	 * Currently testing different ways to do this
+	 * Displays the maze
+	 * Note: Boundaries are currently not correct
+	 * This is because of how the maze is being displayed
+	 * This must be fixed later
 	 * @author Roland Hanson
 	 *
 	 */
@@ -165,7 +234,7 @@ public class TriviaMazeGUI extends JFrame {
 			int bxWidth = 30;
 			int bxHeight = 30;
 			super.paintComponent(g);
-			// Draws the maze (currently only makes a grid overlay)
+			// Draws the maze
 			for (int i = 0; i < 1 + myMaze.getMyRow() * bxWidth; i += bxWidth) {
 				for (int j = 0; j < 1 + myMaze.getMyCol() * bxHeight; j += bxHeight) {
 					g.drawRect(i, j, bxWidth, bxHeight);
@@ -186,6 +255,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goNorth implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			if (myPlayer.getLocationY() > 1) {
+				chkDoor("North");
 				myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() - 1);
 				mazePanel.repaint();
 			}
@@ -200,6 +270,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goEast implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() < myMaze.getMyRow()) {
+				chkDoor("East");
 				myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
 				mazePanel.repaint();
 			}
@@ -214,6 +285,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goSouth implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationY() < myMaze.getMyCol() + 1) {
+				chkDoor("South");
 				myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() + 1);
 				mazePanel.repaint();
 			}
@@ -228,9 +300,9 @@ public class TriviaMazeGUI extends JFrame {
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() > 0) {
+				chkDoor("West");
 				myPlayer.setLocation(myPlayer.getLocationX() - 1, myPlayer.getLocationY());
 				mazePanel.repaint();
-				
 			}
 		}
 	}
@@ -274,4 +346,16 @@ public class TriviaMazeGUI extends JFrame {
 			mazePanel.repaint();
 		}
 	}
+	
+	/**
+	 * Checks to see if the selected choice is correct
+	 * @author Roland Hanson
+	 *
+	 */
+	private class RdbtnChoiceActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
 }

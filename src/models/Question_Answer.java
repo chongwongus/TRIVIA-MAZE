@@ -1,6 +1,10 @@
 package models;
 
-public class Question_Answer {
+import java.io.Serializable;
+
+public class Question_Answer implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String myQuestion;
 	private String[] myChoices;
 	private String myAnswer;

@@ -21,7 +21,7 @@ public class Door {
 		myQA = new Question_Answer(theQA.getQuestion(), theQA.getChoices(), theQA.getAnswer());
 	}
 	
-	public boolean isLocked() {
+	public boolean isOpen() {
 		return myOpenDoor;
 	}
 	
@@ -33,6 +33,14 @@ public class Door {
 		return this.myOpenDoor;
 	}
 	
+	public String[] getChoices() {
+		return myQA.getChoices();
+	}
+	
+	public String getQuestion() {
+		return myQA.getQuestion();
+	}
+	
 	/**
 	 * WIP method to potentially check if a door has been passed through before
 	 * Honestly might be pointless, because you can just call isLocked to check 
@@ -41,6 +49,14 @@ public class Door {
 	 */
 	public boolean hasPassedThrough() {
 		return myDoorPass;
+	}
+	
+	/**
+	 * Opens or keeps door locked based on answer outcome
+	 * @param theStatus
+	 */
+	public void setDoorStatus(final boolean theStatus) {
+		this.myOpenDoor = theStatus;
 	}
 	
 }

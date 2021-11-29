@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.Door;
+
 public final class Room {
 
 	private int myX;
 	private int myY;
 	private Map<String, Door> myDoorMap; 
-	
+	private Door door;
 	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();
@@ -29,6 +31,35 @@ public final class Room {
 		myX = theX;
 		myY = theY;
 		
+	}
+	
+	public void createDoor(String theDirection, Question_Answer theRoomTrivia) {
+		myDoorMap.put(theDirection, new Door(theRoomTrivia));
+	}
+	
+	public void createExistingDoor(String theDirection, Door theDoor) {
+		myDoorMap.put(theDirection, theDoor);
+	}
+	
+	public Door getDoor(String theDirection) {
+		return myDoorMap.get(theDirection);
+	}
+	
+	public boolean hasDoor(String theDirection) {
+		return myDoorMap.containsKey(theDirection);
+	}
+	
+	public int getX() {
+		return this.myX;
+	}
+	public int getY() {
+		return this.myY;
+	}
+	public void setX(int theX) {
+		this.myX = theX;
+	}
+	public void setY(int theY) {
+		this.myY = theY;
 	}
 	
 }

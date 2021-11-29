@@ -1,17 +1,19 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Door;
 
-public final class Room {
+public final class Room implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int myX;
 	private int myY;
 	private Map<String, Door> myDoorMap; 
 	private Door door;
+	private boolean isLocked;
 	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();
@@ -30,7 +32,15 @@ public final class Room {
 		this();
 		myX = theX;
 		myY = theY;
-		
+		isLocked = false;
+	}
+	public void setLock() {
+		if (!door.isOpen()) {
+			isLocked = true;
+		}
+	}
+	public boolean isLocked() {
+		return isLocked;
 	}
 	
 	public void createDoor(String theDirection, Question_Answer theRoomTrivia) {

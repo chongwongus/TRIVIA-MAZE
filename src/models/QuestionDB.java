@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sqlite.SQLiteDataSource;
 
 /**
  * Sets up the question Database

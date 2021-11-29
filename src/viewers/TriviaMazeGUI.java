@@ -4,13 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -19,8 +22,14 @@ import javax.swing.SwingConstants;
 
 import controllers.Maze;
 import controllers.Player;
+import controllers.SaveData;
 import models.*;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
@@ -53,10 +62,10 @@ public class TriviaMazeGUI extends JFrame {
 	JMenuItem mntmCheats;
 	JPanel mazePanel;
 	JButton btnStart;
-	
+		
 	Maze myMaze = new Maze();
 	static Door myDoorChk;
-	static Player myPlayer = new Player();
+	static Player myPlayer = new Player(-1, -1);
 	static Room[][] myRoomChk;
 	static JRadioButton rdbtnChoiceA;
 	static JRadioButton rdbtnChoiceB;
@@ -97,22 +106,26 @@ public class TriviaMazeGUI extends JFrame {
 		btnN.addActionListener(new goNorth());
 		btnN.setBounds(459, 67, 50, 23);
 		contentPane.add(btnN);
+		btnN.setVisible(false);
 		
 		btnE = new JButton("E");
 		btnE.addActionListener(new goEast());
 		btnE.setBounds(484, 101, 50, 23);
 		contentPane.add(btnE);
-		
+		btnE.setVisible(false);
+
 		btnS = new JButton("S");
 		btnS.addActionListener(new goSouth());
 		btnS.setBounds(459, 135, 50, 23);
 		contentPane.add(btnS);
-		
+		btnS.setVisible(false);
+
 		btnW = new JButton("W");
 		btnW.addActionListener(new goWest());
 		btnW.setBounds(429, 101, 50, 23);
 		contentPane.add(btnW);
-		
+		btnW.setVisible(false);
+
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 553, 22);
 		contentPane.add(menuBar);
@@ -126,6 +139,8 @@ public class TriviaMazeGUI extends JFrame {
 		mnFile.add(mntmSave);
 		
 		mntmLoad = new JMenuItem("Load");
+		mntmLoad.addActionListener(new loadMaze());
+		mntmLoad.setHorizontalAlignment(SwingConstants.LEFT);
 		mnFile.add(mntmLoad);
 		
 		mntmExit = new JMenuItem("Exit");
@@ -191,7 +206,8 @@ public class TriviaMazeGUI extends JFrame {
 	 * Might need to separate this into two methods
 	 */
 	public static void chkDoor(final String theDirection) {
-		if (myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].hasDoor(theDirection)) {
+		if (myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].hasDoor(theDirection) 
+				&& myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].isLocked() == false) {
 			myDoorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
 			String [] choices = myDoorChk.getChoices();
 			if (myDoorChk.isOpen() == false) {
@@ -310,15 +326,69 @@ public class TriviaMazeGUI extends JFrame {
 	}
 	
 	/**
-	 * Saves the game (would call the SaveLoad class once it's complete)
-	 * @author Roland Hanson
+	 * Saves the game by calling the SaveLoad class
+	 * 
+	 * 
+	 * @author Roland Hanson, Richard Le
 	 *
 	 */
 	private class saveMaze implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			String wd = System.getProperty("user.dir");
+			
+			JFileChooser fc = new JFileChooser(wd);
+			fc.setFileFilter(new FileNameExtensionFilter(".bin", "bin"));
+			int rc = fc.showDialog(mntmSave, "Save");
+			
+			if(rc == JFileChooser.APPROVE_OPTION) {
+				File file = fc.getSelectedFile();
+				String fileName = file.getAbsolutePath() + ".bin";
+				
+				SaveData data = new SaveData();
+				data.playerData = myPlayer;
+				data.mazeData = myMaze;
+				
+				try {
+					SaveLoad.save(data, fileName);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
 			
 		}
 	}
+	
+	/**
+	 * Loads the game via .bin file serialization 
+	 * thru calling SaveLoad static method load()
+	 * 
+	 * DOES NOT WORK, need to fix gameplay first
+	 * @author Richard Le
+	 *
+	 */
+	private class loadMaze implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String wd = System.getProperty("user.dir");
+			
+			JFileChooser fc = new JFileChooser(wd);
+			fc.setFileFilter(new FileNameExtensionFilter(".bin", "bin"));
+			int rc = fc.showDialog(mntmLoad, "Load");
+			
+			if(rc == JFileChooser.APPROVE_OPTION) {
+				File file = fc.getSelectedFile();
+				String fileName = file.getAbsolutePath();
+				
+				try {
+					SaveData data = (SaveData) SaveLoad.load(fileName);
+					myPlayer.setLocation(data.playerData.getLocationX(), data.playerData.getLocationY());
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+		}
+	}
+
 	
 	/**
 	 * Exits the program
@@ -344,6 +414,10 @@ public class TriviaMazeGUI extends JFrame {
 			myRoomChk = myMaze.getMyMaze();
 			myPlayer.setLocation(1, 1);
 			btnStart.setVisible(false);
+			btnN.setVisible(true);
+			btnS.setVisible(true);
+			btnE.setVisible(true);
+			btnW.setVisible(true);
 			mazePanel.setVisible(true);
 			mazePanel.repaint();
 		}

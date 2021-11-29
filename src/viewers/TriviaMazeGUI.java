@@ -55,6 +55,7 @@ public class TriviaMazeGUI extends JFrame {
 	JButton btnStart;
 	
 	Maze myMaze = new Maze();
+	static Door myDoorChk;
 	static Player myPlayer = new Player();
 	static Room[][] myRoomChk;
 	static JRadioButton rdbtnChoiceA;
@@ -178,7 +179,7 @@ public class TriviaMazeGUI extends JFrame {
 		rdbtnChoiceD.setVisible(false);
 		
 		lblQuestion = new JLabel("Question");
-		lblQuestion.setBounds(136, 278, 249, 45);
+		lblQuestion.setBounds(10, 274, 413, 23);
 		contentPane.add(lblQuestion);
 		lblQuestion.setVisible(false);
 		
@@ -191,10 +192,10 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	public static void chkDoor(final String theDirection) {
 		if (myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].hasDoor(theDirection)) {
-			Door doorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
-			String [] choices = doorChk.getChoices();
-			if (doorChk.isOpen() == false) {
-				lblQuestion.setText(doorChk.getQuestion());
+			myDoorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
+			String [] choices = myDoorChk.getChoices();
+			if (myDoorChk.isOpen() == false) {
+				lblQuestion.setText(myDoorChk.getQuestion());
 				lblQuestion.setVisible(true);
 				if (choices.length == 2) {
 					rdbtnChoiceA.setText(choices[0]);
@@ -220,7 +221,8 @@ public class TriviaMazeGUI extends JFrame {
 	 * Displays the maze
 	 * Note: Boundaries are currently not correct
 	 * This is because of how the maze is being displayed
-	 * This must be fixed later
+	 * This must be fixed later because if you make the player go to far
+	 * It triggers a NullPointerException
 	 * @author Roland Hanson
 	 *
 	 */
@@ -349,12 +351,61 @@ public class TriviaMazeGUI extends JFrame {
 	
 	/**
 	 * Checks to see if the selected choice is correct
+	 * Also resets display for the next door (might move this part to another method)
 	 * @author Roland Hanson
 	 *
 	 */
 	private class RdbtnChoiceActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (rdbtnChoiceA == e.getSource()) {
+				if (myDoorChk.checkAnswer(rdbtnChoiceA.getText())) {
+					myDoorChk.setDoorStatus(true);
+				} else {
+					// *Insert code to permanently lock door here*
+				}
+				rdbtnChoiceA.setSelected(false);
+				rdbtnChoiceA.setVisible(false);
+				rdbtnChoiceB.setVisible(false);
+				rdbtnChoiceC.setVisible(false);
+				rdbtnChoiceD.setVisible(false);
+				lblQuestion.setVisible(false);
+			} else if (rdbtnChoiceB == e.getSource()) {
+				if (myDoorChk.checkAnswer(rdbtnChoiceB.getText())) {
+					myDoorChk.setDoorStatus(true);
+				} else {
+					// *Insert code to permanently lock door here*
+				}
+				rdbtnChoiceB.setSelected(false);
+				rdbtnChoiceA.setVisible(false);
+				rdbtnChoiceB.setVisible(false);
+				rdbtnChoiceC.setVisible(false);
+				rdbtnChoiceD.setVisible(false);
+				lblQuestion.setVisible(false);
+			} else if (rdbtnChoiceC == e.getSource()) {
+				if (myDoorChk.checkAnswer(rdbtnChoiceC.getText())) {
+					myDoorChk.setDoorStatus(true);
+				} else {
+					// *Insert code to permanently lock door here*
+				}
+				rdbtnChoiceC.setSelected(false);
+				rdbtnChoiceA.setVisible(false);
+				rdbtnChoiceB.setVisible(false);
+				rdbtnChoiceC.setVisible(false);
+				rdbtnChoiceD.setVisible(false);
+				lblQuestion.setVisible(false);
+			} else {
+				if (myDoorChk.checkAnswer(rdbtnChoiceD.getText())) {
+					myDoorChk.setDoorStatus(true);
+				} else {
+					// *Insert code to permanently lock door here*
+				}
+				rdbtnChoiceD.setSelected(false);
+				rdbtnChoiceA.setVisible(false);
+				rdbtnChoiceB.setVisible(false);
+				rdbtnChoiceC.setVisible(false);
+				rdbtnChoiceD.setVisible(false);
+				lblQuestion.setVisible(false);
+			}
 		}
 	}
 	

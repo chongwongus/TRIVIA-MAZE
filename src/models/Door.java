@@ -51,4 +51,12 @@ public class Door {
 		return myDoorPass;
 	}
 	
+	/**
+	 * Opens or keeps door locked based on answer outcome
+	 * @param theStatus
+	 */
+	public void setDoorStatus(final boolean theStatus) {
+		this.myOpenDoor = theStatus;
+	}
+	
 }

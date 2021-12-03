@@ -8,12 +8,14 @@ package models;
 public class Door {
 	
 	private Question_Answer myQA;
+	private boolean myDoorLock;
 	private boolean myOpenDoor;
 	private boolean myDoorPass;
 	
 	public Door() {
 		myOpenDoor = false;
 		myDoorPass = false;
+		myDoorLock = false;
 	}
 	
 	public Door(Question_Answer theQA) {
@@ -21,14 +23,16 @@ public class Door {
 		myQA = new Question_Answer(theQA.getQuestion(), theQA.getChoices(), theQA.getAnswer());
 	}
 	
-	public boolean isOpen() {
-		return myOpenDoor;
+	public boolean isLocked() {
+		return myDoorLock;
 	}
 	
 	public boolean checkAnswer(String theAnswer) {
 		if (myQA.getAnswer().equals(theAnswer)) {
 			myOpenDoor = true;
 			myDoorPass = true;
+		}else{
+			myDoorLock = true;
 		}
 		return this.myOpenDoor;
 	}
@@ -51,12 +55,5 @@ public class Door {
 		return myDoorPass;
 	}
 	
-	/**
-	 * Opens or keeps door locked based on answer outcome
-	 * @param theStatus
-	 */
-	public void setDoorStatus(final boolean theStatus) {
-		this.myOpenDoor = theStatus;
-	}
 	
 }

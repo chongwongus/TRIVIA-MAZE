@@ -68,6 +68,7 @@ public class TriviaMazeGUI extends JFrame {
 	static JRadioButton myRdbtnChoiceC;
 	static JRadioButton myRdbtnChoiceD;
 	static JLabel myLblQuestion;
+	static JLabel myLblResult;
 
 	/**
 	 * Launch the application.
@@ -143,12 +144,15 @@ public class TriviaMazeGUI extends JFrame {
 		myMenuBar.add(myMnHelp);
 		
 		myMntmAbout = new JMenuItem("About");
+		myMntmAbout.addActionListener(new MyMntmAboutActionListener());
 		myMnHelp.add(myMntmAbout);
 		
 		myMntmInstructions = new JMenuItem("Instructions");
+		myMntmInstructions.addActionListener(new MyMntmInstructionsActionListener());
 		myMnHelp.add(myMntmInstructions);
 		
 		myMntmCheats = new JMenuItem("Cheats");
+		myMntmCheats.addActionListener(new MyMntmCheatsActionListener());
 		myMnHelp.add(myMntmCheats);
 		
 		myMazePanel = new mazePanel();
@@ -188,6 +192,11 @@ public class TriviaMazeGUI extends JFrame {
 		myLblQuestion = new JLabel("Question");
 		myLblQuestion.setBounds(10, 274, 413, 23);
 		myContentPane.add(myLblQuestion);
+		
+		myLblResult = new JLabel("Correct!");
+		myLblResult.setBounds(289, 263, 46, 14);
+		myLblResult.setVisible(false);
+		myContentPane.add(myLblResult);
 		myLblQuestion.setVisible(false);
 		
 	}
@@ -198,8 +207,8 @@ public class TriviaMazeGUI extends JFrame {
 	 * @return
 	 */
 	private static boolean doorChk(final String theDirection) {
-		if (myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].hasDoor(theDirection)) {
-			myDoorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
+		if (myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].hasDoor(theDirection)) {
+			myDoorChk = myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].getDoor(theDirection);
 			return true;
 		} 
 		return false;
@@ -214,6 +223,8 @@ public class TriviaMazeGUI extends JFrame {
 		String [] choices = myDoorChk.getChoices();
 		myLblQuestion.setText(myDoorChk.getQuestion());
 		myLblQuestion.setVisible(true);
+		myLblResult.setVisible(false);
+		myLblResult.setText("Correct!");
 		if (choices.length == 2) {
 				myRdbtnChoiceA.setText(choices[0]);
 				myRdbtnChoiceB.setText(choices[1]);
@@ -261,10 +272,8 @@ public class TriviaMazeGUI extends JFrame {
 	
 	/**
 	 * Displays the maze
-	 * Note: Boundaries are currently not correct
-	 * This is because of how the maze is being displayed
-	 * This must be fixed later because if you make the player go too far
-	 * It triggers a NullPointerException
+	 * Note: The player location is currently not correct
+	 * The maze is displayed correctly, but the player location is not in sync
 	 * @author Roland Hanson
 	 *
 	 */
@@ -279,12 +288,12 @@ public class TriviaMazeGUI extends JFrame {
 			int bxHeight = 30;
 			super.paintComponent(g);
 			// Draws the maze
-			for (int i = 0; i < 1 + myMaze.getMyRow() * bxWidth; i += bxWidth) {
-				for (int j = 0; j < 1 + myMaze.getMyCol() * bxHeight; j += bxHeight) {
+			for (int i = 1; i < myMaze.getMyRow() * bxWidth; i += bxWidth) {
+				for (int j = 1; j < myMaze.getMyCol() * bxHeight; j += bxHeight) {
 					g.drawRect(i, j, bxWidth, bxHeight);
 				}
 			}
-			// Currently, the player displayed is based on window location NOT maze location
+			// The player displayed is based on window location NOT maze location
 			// Some tweaking may need to be done, but otherwise the player is where they should be
 			g.drawString("<O>", myPlayer.getLocationX() * bxWidth, myPlayer.getLocationY() * bxHeight);
 		}
@@ -300,7 +309,9 @@ public class TriviaMazeGUI extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			if (myPlayer.getLocationY() > 1) {
 				if (doorChk("North") && !myDoorChk.isLocked()) {
-					doorSetup("North");
+					if (!myDoorChk.hasPassedThrough()) {
+						doorSetup("North");
+					}
 					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() - 1);
 					myLastDirection = "North";
 					myMazePanel.repaint();
@@ -464,6 +475,7 @@ public class TriviaMazeGUI extends JFrame {
 			if (myRdbtnChoiceA == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceA.getText())) {
 					moveReversal(myLastDirection);
+					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				}
 				myRdbtnChoiceA.setSelected(false);
@@ -472,9 +484,11 @@ public class TriviaMazeGUI extends JFrame {
 				myRdbtnChoiceC.setVisible(false);
 				myRdbtnChoiceD.setVisible(false);
 				myLblQuestion.setVisible(false);
+				myLblResult.setVisible(true);
 			} else if (myRdbtnChoiceB == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceB.getText())) {
 					moveReversal(myLastDirection);
+					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				} 
 				myRdbtnChoiceB.setSelected(false);
@@ -483,9 +497,11 @@ public class TriviaMazeGUI extends JFrame {
 				myRdbtnChoiceC.setVisible(false);
 				myRdbtnChoiceD.setVisible(false);
 				myLblQuestion.setVisible(false);
+				myLblResult.setVisible(true);
 			} else if (myRdbtnChoiceC == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceC.getText())) {
 					moveReversal(myLastDirection);
+					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				} 
 				myRdbtnChoiceC.setSelected(false);
@@ -494,9 +510,11 @@ public class TriviaMazeGUI extends JFrame {
 				myRdbtnChoiceC.setVisible(false);
 				myRdbtnChoiceD.setVisible(false);
 				myLblQuestion.setVisible(false);
+				myLblResult.setVisible(true);
 			} else {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceD.getText())) {
 					moveReversal(myLastDirection);
+					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				}
 				myRdbtnChoiceD.setSelected(false);
@@ -505,8 +523,41 @@ public class TriviaMazeGUI extends JFrame {
 				myRdbtnChoiceC.setVisible(false);
 				myRdbtnChoiceD.setVisible(false);
 				myLblQuestion.setVisible(false);
+				myLblResult.setVisible(true);
 			}
 		}
 	}
 	
+	/**
+	 * Displays the about window
+	 * @author Roland Hanson
+	 *
+	 */
+	private class MyMntmAboutActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
+	/**
+	 * Displays the instructions
+	 * @author Roland Hanson
+	 *
+	 */
+	private class MyMntmInstructionsActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
+	/**
+	 * Shows the cheat menu (Currently has no cheats)
+	 * @author Roland Hanson
+	 *
+	 */
+	private class MyMntmCheatsActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
 }

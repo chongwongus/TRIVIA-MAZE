@@ -46,9 +46,8 @@ public class Door {
 	}
 	
 	/**
-	 * WIP method to potentially check if a door has been passed through before
-	 * Honestly might be pointless, because you can just call isLocked to check 
-	 * the status of a previous door
+	 * Checks if a door has been passed through before
+	 * So far only works one way
 	 * @return myDoorPass
 	 */
 	public boolean hasPassedThrough() {

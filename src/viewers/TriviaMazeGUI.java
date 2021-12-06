@@ -17,6 +17,7 @@ import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import controllers.Maze;
@@ -27,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 /**
  * GUI for Trivia Maze (currently WIP) Built using windowbuilder
@@ -58,7 +60,7 @@ public class TriviaMazeGUI extends JFrame {
 	JPanel myMazePanel;
 	JButton myBtnStart;
 	
-	Maze myMaze = new Maze();
+	static Maze myMaze;
 	private String myLastDirection;
 	static Door myDoorChk;
 	static Player myPlayer = new Player();
@@ -69,6 +71,12 @@ public class TriviaMazeGUI extends JFrame {
 	static JRadioButton myRdbtnChoiceD;
 	static JLabel myLblQuestion;
 	static JLabel myLblResult;
+	static JTextField myTxtFieldRow;
+	static JTextField myTxtFieldCol;
+	JLabel myLblPlayerControls;
+	JLabel myLblInstructions;
+	JLabel myLblOfRows;
+	JLabel myLblOfColumns;
 
 	/**
 	 * Launch the application.
@@ -197,6 +205,35 @@ public class TriviaMazeGUI extends JFrame {
 		myLblResult.setBounds(289, 263, 46, 14);
 		myLblResult.setVisible(false);
 		myContentPane.add(myLblResult);
+		
+		myTxtFieldRow = new JTextField();
+		myTxtFieldRow.setBounds(210, 249, 86, 20);
+		myContentPane.add(myTxtFieldRow);
+		myTxtFieldRow.setColumns(10);
+		
+		myTxtFieldCol = new JTextField();
+		myTxtFieldCol.setBounds(337, 249, 86, 20);
+		myContentPane.add(myTxtFieldCol);
+		myTxtFieldCol.setColumns(10);
+		
+		myLblPlayerControls = new JLabel("Player Controls");
+		myLblPlayerControls.setBounds(537, 42, 89, 14);
+		myContentPane.add(myLblPlayerControls);
+		
+		myLblInstructions = new JLabel("Please enter your desired size for the maze (Default is 4x4)");
+		myLblInstructions.setHorizontalAlignment(SwingConstants.CENTER);
+		myLblInstructions.setBounds(143, 131, 351, 31);
+		myContentPane.add(myLblInstructions);
+		
+		myLblOfRows = new JLabel("# of Rows");
+		myLblOfRows.setHorizontalAlignment(SwingConstants.CENTER);
+		myLblOfRows.setBounds(210, 278, 86, 14);
+		myContentPane.add(myLblOfRows);
+		
+		myLblOfColumns = new JLabel("# of Columns");
+		myLblOfColumns.setHorizontalAlignment(SwingConstants.CENTER);
+		myLblOfColumns.setBounds(337, 278, 86, 14);
+		myContentPane.add(myLblOfColumns);
 		myLblQuestion.setVisible(false);
 		
 	}
@@ -272,8 +309,6 @@ public class TriviaMazeGUI extends JFrame {
 	
 	/**
 	 * Displays the maze
-	 * Note: The player location is currently not correct
-	 * The maze is displayed correctly, but the player location is not in sync
 	 * @author Roland Hanson
 	 *
 	 */
@@ -288,13 +323,11 @@ public class TriviaMazeGUI extends JFrame {
 			int bxHeight = 30;
 			super.paintComponent(g);
 			// Draws the maze
-			for (int i = 1; i < myMaze.getMyRow() * bxWidth; i += bxWidth) {
-				for (int j = 1; j < myMaze.getMyCol() * bxHeight; j += bxHeight) {
+			for (int i = 27; i < myMaze.getMyRow() * bxWidth; i += bxWidth) {
+				for (int j = 0; j < myMaze.getMyCol() * bxHeight; j += bxHeight) {
 					g.drawRect(i, j, bxWidth, bxHeight);
 				}
 			}
-			// The player displayed is based on window location NOT maze location
-			// Some tweaking may need to be done, but otherwise the player is where they should be
 			g.drawString("<O>", myPlayer.getLocationX() * bxWidth, myPlayer.getLocationY() * bxHeight);
 		}
 		
@@ -454,13 +487,51 @@ public class TriviaMazeGUI extends JFrame {
 	private class startGame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Initialize maze & player
+			setMazeSize();
 			myMaze.initializeRooms();
 			myMaze.initializeRoomQuestions();
 			myRoomChk = myMaze.getMyMaze();
 			myPlayer.setLocation(1, 1);
+			myLblInstructions.setVisible(false);
+			myLblOfColumns.setVisible(false);
+			myLblOfRows.setVisible(false);
+			myTxtFieldCol.setVisible(false);
+			myTxtFieldRow.setVisible(false);
 			myBtnStart.setVisible(false);
 			myMazePanel.setVisible(true);
 			myMazePanel.repaint();
+		}
+	}
+	
+	/**
+	 * Checks if a String can be parsed into an int
+	 * @param theString
+	 * @return
+	 */
+	private static boolean isInt(final String theString) {
+		try {
+			Integer.parseInt(theString);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Sets up the size of the maze based on what was
+	 * entered into the text fields
+	 * Note: Any number entered that is greater than 4 causes an exception to be thrown
+	 * This is most likely because of our database size since thats when the error occurs  
+	 */
+	private static void setMazeSize() {
+		if (isInt(myTxtFieldRow.getText()) && isInt(myTxtFieldCol.getText())) {
+			int row = Integer.parseInt((myTxtFieldRow.getText()));
+			int col = Integer.parseInt((myTxtFieldCol.getText()));
+			if (row > 4 && col > 4) {
+				myMaze = new Maze(row, col);
+			}
+		} else {
+			myMaze = new Maze();
 		}
 	}
 	
@@ -530,12 +601,15 @@ public class TriviaMazeGUI extends JFrame {
 	
 	/**
 	 * Displays the about window
+	 * Note: Might remove the acronym part
 	 * @author Roland Hanson
 	 *
 	 */
 	private class MyMntmAboutActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			JOptionPane.showMessageDialog(null, "Trivia Maze \nCreated by: Roland Hanson, Jason, and Richard Le"
+					+ "\n --------- \nAcronyms: \nNMS: No Man's Sky"
+					, "About", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -546,7 +620,10 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class MyMntmInstructionsActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			JOptionPane.showMessageDialog(null, "Click on the start button to start the maze \n"
+					+ "Use the N,S,E,and W buttons to move the player \nTo progress "
+					+ "in the maze, answer the given trivia questions correctly \nTo win, get to the exit "
+					+ "without trapping yourself by answering question incorrectly", "Instructions", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	

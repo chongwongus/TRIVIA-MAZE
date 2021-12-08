@@ -20,9 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import controllers.Maze;
 import controllers.Player;
-import controllers.SaveData;
 import models.*;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -32,9 +30,8 @@ import javax.swing.JTextField;
 
 /**
  * GUI for Trivia Maze (currently WIP) Built using windowbuilder
- * Note: Direction movements still need to check the boundaries of the maze
  * @author Roland Hanson
- * @version 2.0
+ * @version 0.8.3
  */
 public class TriviaMazeGUI extends JFrame {
 
@@ -202,7 +199,8 @@ public class TriviaMazeGUI extends JFrame {
 		myContentPane.add(myLblQuestion);
 		
 		myLblResult = new JLabel("Correct!");
-		myLblResult.setBounds(289, 263, 46, 14);
+		myLblResult.setHorizontalAlignment(SwingConstants.CENTER);
+		myLblResult.setBounds(236, 263, 159, 14);
 		myLblResult.setVisible(false);
 		myContentPane.add(myLblResult);
 		
@@ -348,7 +346,13 @@ public class TriviaMazeGUI extends JFrame {
 					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() - 1);
 					myLastDirection = "North";
 					myMazePanel.repaint();
+				} else {
+					myLblResult.setText("Nope, can't go that way!");
+					myMazePanel.repaint();
 				}
+			} else {
+				myLblResult.setText("Nope, can't go that way!");
+				myMazePanel.repaint();
 			}
 		}
 	}
@@ -362,11 +366,17 @@ public class TriviaMazeGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() < myMaze.getMyRow()) {
 				if (doorChk("East") && !myDoorChk.isLocked()) {
-				doorSetup("East");
-				myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
-				myLastDirection = "East";
-				myMazePanel.repaint();
+					doorSetup("East");
+					myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
+					myLastDirection = "East";
+					myMazePanel.repaint();
+				} else {
+					myLblResult.setText("Nope, can't go that way!");
+					myMazePanel.repaint();
 				}
+			} else {
+				myLblResult.setText("Nope, can't go that way!");
+				myMazePanel.repaint();
 			}
 		}
 	}
@@ -380,11 +390,17 @@ public class TriviaMazeGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationY() < myMaze.getMyCol() + 1) {
 				if (doorChk("South") && !myDoorChk.isLocked()) {
-				doorSetup("South");
-				myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() + 1);
-				myLastDirection = "South";
-				myMazePanel.repaint();
+					doorSetup("South");
+					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() + 1);
+					myLastDirection = "South";
+					myMazePanel.repaint();
+				} else {
+					myLblResult.setText("Nope, can't go that way!");
+					myMazePanel.repaint();
 				}
+			} else {
+				myLblResult.setText("Nope, can't go that way!");
+				myMazePanel.repaint();
 			}
 		}
 	}
@@ -397,12 +413,18 @@ public class TriviaMazeGUI extends JFrame {
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() > 0) {
-				if(doorChk("West") && !myDoorChk.isLocked()) {
-				doorSetup("West");
-				myPlayer.setLocation(myPlayer.getLocationX() - 1, myPlayer.getLocationY());
-				myLastDirection = "West";
-				myMazePanel.repaint();
+				if (doorChk("West") && !myDoorChk.isLocked()) {
+					doorSetup("West");
+					myPlayer.setLocation(myPlayer.getLocationX() - 1, myPlayer.getLocationY());
+					myLastDirection = "West";
+					myMazePanel.repaint();
+				} else {
+					myLblResult.setText("Nope, can't go that way!");
+					myMazePanel.repaint();
 				}
+			} else {
+				myLblResult.setText("Nope, can't go that way!");
+				myMazePanel.repaint();
 			}
 		}
 	}
@@ -601,14 +623,12 @@ public class TriviaMazeGUI extends JFrame {
 	
 	/**
 	 * Displays the about window
-	 * Note: Might remove the acronym part
 	 * @author Roland Hanson
 	 *
 	 */
 	private class MyMntmAboutActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(null, "Trivia Maze \nCreated by: Roland Hanson, Jason, and Richard Le"
-					+ "\n --------- \nAcronyms: \nNMS: No Man's Sky"
+			JOptionPane.showMessageDialog(null, "Trivia Maze \nCreated by: Roland Hanson, Jason Hsu, and Richard Le"
 					, "About", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}

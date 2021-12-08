@@ -1,6 +1,8 @@
-package controllers;
+package models;
 
 import java.io.Serializable;
+
+import controllers.*;
 
 public class SaveData implements Serializable{
 

@@ -11,7 +11,6 @@ public final class Room {
 	private int myX;
 	private int myY;
 	private Map<String, Door> myDoorMap; 
-	private Door door;
 	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();

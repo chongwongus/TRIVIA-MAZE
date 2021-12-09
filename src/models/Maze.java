@@ -1,4 +1,4 @@
-package controllers;
+package models;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +20,8 @@ public final class Maze {
 	 * Sets up the Maze
 	 */
 	public Maze() {
-		myRow = 3;
-		myCol = 3;
+		myRow = 4;
+		myCol = 4;
 		myMaze = new Room[myRow + 2][myCol + 2];
 	}
 

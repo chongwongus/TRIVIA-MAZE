@@ -1,11 +1,15 @@
 package controllers;
 
+import java.io.Serializable;
+
 /**
  * Walks through the maze
  * @author Roland Hanson
  *
  */
-public class Player {
+public class Player implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private int myPlayerX;
 	private int myPlayerY;

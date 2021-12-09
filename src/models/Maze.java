@@ -42,13 +42,6 @@ public final class Maze implements Serializable, Cloneable {
 	public int getMyCol() {
 		return this.myCol;
 	}
-	public List getList() {
-		return allTriviaQ;
-	}
-	public void setList(List theList) {
-		allTriviaQ.addAll(theList);
-	}
-		
 	/**
 	 * Method for the GUI to see the room array for the questions
 	 * Note: There might be a better way of doing this, so this might be temporary
@@ -78,7 +71,6 @@ public final class Maze implements Serializable, Cloneable {
 	 * create the list.
 	 */
 	public void initializeRoomQuestions() {
-		allTriviaQ = new ArrayList<>();
 		Stream.of(QuestionDB.createMultipleChoiceTrivia(), QuestionDB.createTrueFalseTrivia())
 				.forEach(allTriviaQ::addAll);
 		int listIndex = 0;

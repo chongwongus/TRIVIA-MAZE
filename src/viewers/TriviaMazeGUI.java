@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,17 +21,13 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import controllers.Player;
-import controllers.SaveData;
 import models.*;
 import java.awt.event.ActionListener;
 import java.io.File;
-<<<<<<< HEAD
-=======
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -49,7 +44,6 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 5085020715814436080L;
 	
-<<<<<<< HEAD
 	private static JPanel myContentPane;
 	JButton myBtnN;
 	JButton myBtnE;
@@ -69,28 +63,8 @@ public class TriviaMazeGUI extends JFrame {
 	
 	static Maze myMaze;
 	private String myLastDirection;
-=======
-	private static JPanel contentPane;
-	JButton btnN;
-	JButton btnE;
-	JButton btnS;
-	JButton btnW;
-	JMenuBar menuBar;
-	JMenu mnFile;
-	JMenuItem mntmSave;
-	JMenuItem mntmLoad;
-	JMenuItem mntmExit;
-	JMenu mnHelp;
-	JMenuItem mntmAbout;
-	JMenuItem mntmInstructions;
-	JMenuItem mntmCheats;
-	JPanel mazePanel;
-	JButton btnStart;
-		
-	Maze myMaze = new Maze();
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 	static Door myDoorChk;
-	static Player myPlayer = new Player(-1, -1);
+	static Player myPlayer = new Player();
 	static Room[][] myRoomChk;
 	static JRadioButton myRdbtnChoiceA;
 	static JRadioButton myRdbtnChoiceB;
@@ -130,7 +104,6 @@ public class TriviaMazeGUI extends JFrame {
 	public TriviaMazeGUI() {
 		setTitle("Trivia Maze");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-<<<<<<< HEAD
 		setBounds(100, 100, 716, 395);
 		myContentPane = new JPanel();
 		myContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -264,7 +237,6 @@ public class TriviaMazeGUI extends JFrame {
 		myLblOfColumns.setBounds(337, 278, 86, 14);
 		myContentPane.add(myLblOfColumns);
 		myLblQuestion.setVisible(false);
-=======
 		setBounds(100, 100, 569, 395);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -366,7 +338,6 @@ public class TriviaMazeGUI extends JFrame {
 		lblQuestion.setBounds(10, 274, 413, 23);
 		contentPane.add(lblQuestion);
 		lblQuestion.setVisible(false);
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 		
 	}
 	
@@ -375,7 +346,49 @@ public class TriviaMazeGUI extends JFrame {
 	 * @param theDirection
 	 * @return
 	 */
-<<<<<<< HEAD
+	private static boolean doorChk(final String theDirection) {
+		if (myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].hasDoor(theDirection)) {
+			myDoorChk = myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].getDoor(theDirection);
+			return true;
+		} 
+		return false;
+	}
+	
+	/**
+	 * Sets up a question from a door (based on the players location) to be shown in the GUI 
+	 * @param theDirection
+	 */
+	private static void doorSetup(final String theDirection) {
+		//myDoorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
+		String [] choices = myDoorChk.getChoices();
+		myLblQuestion.setText(myDoorChk.getQuestion());
+		myLblQuestion.setVisible(true);
+		myLblResult.setVisible(false);
+		myLblResult.setText("Correct!");
+		if (choices.length == 2) {
+				myRdbtnChoiceA.setText(choices[0]);
+				myRdbtnChoiceB.setText(choices[1]);
+				myRdbtnChoiceA.setVisible(true);
+				myRdbtnChoiceB.setVisible(true);
+		} else {
+				myRdbtnChoiceA.setText(choices[0]);
+				myRdbtnChoiceB.setText(choices[1]);
+				myRdbtnChoiceC.setText(choices[2]);
+				myRdbtnChoiceD.setText(choices[3]);
+				myRdbtnChoiceA.setVisible(true);
+				myRdbtnChoiceB.setVisible(true);
+				myRdbtnChoiceC.setVisible(true);
+				myRdbtnChoiceD.setVisible(true);
+		}
+		myContentPane.repaint();
+		
+	}
+	
+	/**
+	 * Checks to see if there is a door given the player's current location
+	 * @param theDirection
+	 * @return
+	 */
 	private static boolean doorChk(final String theDirection) {
 		if (myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].hasDoor(theDirection)) {
 			myDoorChk = myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].getDoor(theDirection);
@@ -418,6 +431,10 @@ public class TriviaMazeGUI extends JFrame {
 	 * Undoes the players last move
 	 * @param theDirection
 	 */
+=======
+	 * Undoes the players last move
+	 * @param theDirection
+	 */
 	private static void moveReversal(final String theDirection) {
 		switch (theDirection) {
 		
@@ -437,33 +454,6 @@ public class TriviaMazeGUI extends JFrame {
 			myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
 			break;
 		
-=======
-	public static void chkDoor(final String theDirection) {
-		if (myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].hasDoor(theDirection) 
-				&& myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].isLocked() == false) {
-			myDoorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
-			String [] choices = myDoorChk.getChoices();
-			if (myDoorChk.isOpen() == false) {
-				lblQuestion.setText(myDoorChk.getQuestion());
-				lblQuestion.setVisible(true);
-				if (choices.length == 2) {
-					rdbtnChoiceA.setText(choices[0]);
-					rdbtnChoiceB.setText(choices[1]);
-					rdbtnChoiceA.setVisible(true);
-					rdbtnChoiceB.setVisible(true);
-				} else {
-					rdbtnChoiceA.setText(choices[0]);
-					rdbtnChoiceB.setText(choices[1]);
-					rdbtnChoiceC.setText(choices[2]);
-					rdbtnChoiceD.setText(choices[3]);
-					rdbtnChoiceA.setVisible(true);
-					rdbtnChoiceB.setVisible(true);
-					rdbtnChoiceC.setVisible(true);
-					rdbtnChoiceD.setVisible(true);
-				}
-				contentPane.repaint();
-			}
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 		}
 	}
 	
@@ -593,11 +583,6 @@ public class TriviaMazeGUI extends JFrame {
 	
 	/**
 	 * Saves the game by calling the SaveLoad class
-<<<<<<< HEAD
-=======
-	 * 
-	 * 
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 	 * @author Roland Hanson, Richard Le
 	 *
 	 */
@@ -607,11 +592,7 @@ public class TriviaMazeGUI extends JFrame {
 			
 			JFileChooser fc = new JFileChooser(wd);
 			fc.setFileFilter(new FileNameExtensionFilter(".bin", "bin"));
-<<<<<<< HEAD
-			int rc = fc.showDialog(myMntmSave, "Save");
-=======
 			int rc = fc.showDialog(mntmSave, "Save");
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 			
 			if(rc == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
@@ -627,10 +608,6 @@ public class TriviaMazeGUI extends JFrame {
 					e1.printStackTrace();
 				}
 			}
-<<<<<<< HEAD
-=======
-			
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 		}
 	}
 	
@@ -648,11 +625,7 @@ public class TriviaMazeGUI extends JFrame {
 			
 			JFileChooser fc = new JFileChooser(wd);
 			fc.setFileFilter(new FileNameExtensionFilter(".bin", "bin"));
-<<<<<<< HEAD
-			int rc = fc.showDialog(myMntmLoad, "Load");
-=======
 			int rc = fc.showDialog(mntmLoad, "Load");
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 			
 			if(rc == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
@@ -668,7 +641,6 @@ public class TriviaMazeGUI extends JFrame {
 			
 		}
 	}
-
 	
 	/**
 	 * Exits the program
@@ -694,7 +666,6 @@ public class TriviaMazeGUI extends JFrame {
 			myMaze.initializeRoomQuestions();
 			myRoomChk = myMaze.getMyMaze();
 			myPlayer.setLocation(1, 1);
-<<<<<<< HEAD
 			myLblInstructions.setVisible(false);
 			myLblOfColumns.setVisible(false);
 			myLblOfRows.setVisible(false);
@@ -735,15 +706,6 @@ public class TriviaMazeGUI extends JFrame {
 			}
 		} else {
 			myMaze = new Maze();
-=======
-			btnStart.setVisible(false);
-			btnN.setVisible(true);
-			btnS.setVisible(true);
-			btnE.setVisible(true);
-			btnW.setVisible(true);
-			mazePanel.setVisible(true);
-			mazePanel.repaint();
->>>>>>> 51de49d527efe62655a61c61bceafe656dcb6de8
 		}
 	}
 	

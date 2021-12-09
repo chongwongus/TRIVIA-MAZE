@@ -1,12 +1,13 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import models.Door;
 
-public final class Room {
+public final class Room implements Serializable {
 
 	private int myX;
 	private int myY;

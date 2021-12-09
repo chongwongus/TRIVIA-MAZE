@@ -71,6 +71,7 @@ public final class Maze implements Serializable, Cloneable {
 	 * create the list.
 	 */
 	public void initializeRoomQuestions() {
+		List<Question_Answer> allTriviaQ = new ArrayList<>();
 		Stream.of(QuestionDB.createMultipleChoiceTrivia(), QuestionDB.createTrueFalseTrivia())
 				.forEach(allTriviaQ::addAll);
 		int listIndex = 0;

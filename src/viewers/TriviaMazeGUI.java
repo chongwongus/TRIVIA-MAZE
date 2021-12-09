@@ -439,7 +439,7 @@ public class TriviaMazeGUI extends JFrame {
 			
 			JFileChooser fc = new JFileChooser(wd);
 			fc.setFileFilter(new FileNameExtensionFilter(".bin", "bin"));
-			int rc = fc.showDialog(mntmSave, "Save");
+			int rc = fc.showDialog(myMntmSave, "Save");
 			
 			if(rc == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
@@ -472,7 +472,7 @@ public class TriviaMazeGUI extends JFrame {
 			
 			JFileChooser fc = new JFileChooser(wd);
 			fc.setFileFilter(new FileNameExtensionFilter(".bin", "bin"));
-			int rc = fc.showDialog(mntmLoad, "Load");
+			int rc = fc.showDialog(myMntmLoad, "Load");
 			
 			if(rc == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();

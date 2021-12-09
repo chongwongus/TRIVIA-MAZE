@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,11 +11,14 @@ import models.Room;
 import models.QuestionDB;
 import models.Question_Answer;
 
-public final class Maze {
+public final class Maze implements Serializable, Cloneable {
 
+	private static final long serialVersionUID = 1L;
 	private int myRow;
 	private int myCol;
 	private Room[][] myMaze;
+	private List<Question_Answer> allTriviaQ;
+
 
 	/**
 	 * Sets up the Maze
@@ -38,7 +42,6 @@ public final class Maze {
 	public int getMyCol() {
 		return this.myCol;
 	}
-
 	/**
 	 * Method for the GUI to see the room array for the questions
 	 * Note: There might be a better way of doing this, so this might be temporary
@@ -68,7 +71,6 @@ public final class Maze {
 	 * create the list.
 	 */
 	public void initializeRoomQuestions() {
-		List<Question_Answer> allTriviaQ = new ArrayList<>();
 		Stream.of(QuestionDB.createMultipleChoiceTrivia(), QuestionDB.createTrueFalseTrivia())
 				.forEach(allTriviaQ::addAll);
 		int listIndex = 0;

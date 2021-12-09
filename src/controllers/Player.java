@@ -7,7 +7,13 @@ import java.io.Serializable;
  * @author Roland Hanson
  *
  */
+<<<<<<< HEAD
 public class Player implements Serializable {
+=======
+public class Player implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+>>>>>>> origin/RolandHansonDev
 	
 	private static final long serialVersionUID = 1L;
 	private int myPlayerX;

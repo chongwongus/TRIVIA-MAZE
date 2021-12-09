@@ -12,8 +12,11 @@ public final class Room implements Serializable {
 	private int myX;
 	private int myY;
 	private Map<String, Door> myDoorMap; 
+<<<<<<< HEAD
 	private Door door;
 	private boolean isLocked;
+=======
+>>>>>>> origin/RolandHansonDev
 	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();

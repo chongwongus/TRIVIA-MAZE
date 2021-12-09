@@ -431,10 +431,6 @@ public class TriviaMazeGUI extends JFrame {
 	 * Undoes the players last move
 	 * @param theDirection
 	 */
-=======
-	 * Undoes the players last move
-	 * @param theDirection
-	 */
 	private static void moveReversal(final String theDirection) {
 		switch (theDirection) {
 		

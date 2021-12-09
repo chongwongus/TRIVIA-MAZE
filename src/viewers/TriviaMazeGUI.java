@@ -24,10 +24,6 @@ import controllers.Player;
 import models.*;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -237,7 +233,6 @@ public class TriviaMazeGUI extends JFrame {
 		myLblOfColumns.setBounds(337, 278, 86, 14);
 		myContentPane.add(myLblOfColumns);
 		myLblQuestion.setVisible(false);
-		
 	}
 	
 	/**

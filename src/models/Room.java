@@ -12,6 +12,7 @@ public final class Room implements Serializable {
 	private int myX;
 	private int myY;
 	private Map<String, Door> myDoorMap; 
+	private char myId;
 	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();
@@ -68,11 +69,20 @@ public final class Room implements Serializable {
 		return doors;
 	}
 	
+	public char getId() {
+		return this.myId;
+	}
+	
 	public void setX(int theX) {
 		this.myX = theX;
 	}
+	
 	public void setY(int theY) {
 		this.myY = theY;
+	}
+	
+	public void setId(char theId) {
+		this.myId = theId;
 	}
 	
 }

@@ -16,8 +16,8 @@ public class MazeTest extends TestCase{
 	
 	public void testConstructor () {
 		myMaze = new Maze();
-		assertEquals(3, myMaze.getMyRow());
-		assertEquals(3, myMaze.getMyCol());
+		assertEquals(4, myMaze.getMyRow());
+		assertEquals(4, myMaze.getMyCol());
 		
 		myMaze = new Maze(5, 5);
 		assertEquals(5, myMaze.getMyRow());
@@ -64,9 +64,6 @@ public class MazeTest extends TestCase{
 		Door testDoor2 = myMaze.getMyMaze()[1][2].getDoor("West");
 		assertEquals(testDoor1,testDoor2);
 		
-		myMaze = new Maze(10,10);
-		myMaze.initializeRooms();
-		myMaze.initializeRoomQuestions();
 
 	}
 }

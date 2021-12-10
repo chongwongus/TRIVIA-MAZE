@@ -65,6 +65,25 @@ public final class Maze implements Serializable, Cloneable {
 				myMaze[i][j].setY(i);
 			}
 		}
+		
+		setStartExit();
+	}
+	
+	private void setStartExit() {
+		int randomStartRow = (int)(Math.random() * myRow) + 1;
+		int randomStartCol = (int)(Math.random() * myCol) + 1;
+		
+		myMaze[randomStartRow][randomStartCol].setId('S');
+		
+		int randomExitRow = (int)(Math.random() * myRow) + 1;
+		int randomExitCol = (int)(Math.random() * myCol) + 1;
+		
+		while (randomExitRow == randomStartRow && randomExitRow == randomStartRow) {
+			randomExitRow = (int)(Math.random() * myRow) + 1;
+			randomExitCol = (int)(Math.random() * myCol) + 1;
+		}
+		
+		myMaze[randomExitRow][randomExitCol].setId('E');
 	}
 
 	/**

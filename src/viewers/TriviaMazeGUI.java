@@ -45,6 +45,10 @@ public class TriviaMazeGUI extends JFrame {
 	JButton myBtnE;
 	JButton myBtnS;
 	JButton myBtnW;
+	DoorButton myDBtnN;
+	DoorButton myDBtnE;
+	DoorButton myDBtnS;
+	DoorButton myDBtnW;
 	JMenuBar myMenuBar;
 	JMenu myMnFile;
 	JMenuItem myMntmSave;
@@ -125,6 +129,26 @@ public class TriviaMazeGUI extends JFrame {
 		myBtnW.addActionListener(new goWest());
 		myBtnW.setBounds(526, 101, 50, 23);
 		myContentPane.add(myBtnW);
+		
+		myDBtnN = new DoorButton();
+		myDBtnN.addActionListener(new northDoorInfo());
+		myDBtnN.setBounds(350,67,50,25);
+		myContentPane.add(myDBtnN);
+		
+		myDBtnE = new DoorButton();
+		myDBtnE.addActionListener(new eastDoorInfo());
+		myDBtnE.setBounds(380,101,50,25);
+		myContentPane.add(myDBtnE);
+		
+		myDBtnS = new DoorButton();
+		myDBtnS.addActionListener(new southDoorInfo());
+		myDBtnS.setBounds(350,135,50,25);
+		myContentPane.add(myDBtnS);
+		
+		myDBtnW = new DoorButton();
+		myDBtnW.addActionListener(new westDoorInfo());
+		myDBtnW.setBounds(320,101,50,25);
+		myContentPane.add(myDBtnW);
 		
 		myMenuBar = new JMenuBar();
 		myMenuBar.setBounds(0, 0, 700, 22);
@@ -423,6 +447,42 @@ public class TriviaMazeGUI extends JFrame {
 				}
 			} else {
 				myLblResult.setText("Nope, can't go that way!");
+				myMazePanel.repaint();
+			}
+		}
+	}
+	
+	private class northDoorInfo implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (doorChk("North")) {
+				doorSetup("North");
+				myMazePanel.repaint();
+			}
+		}
+	}
+	
+	private class eastDoorInfo implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (doorChk("East")) {
+				doorSetup("East");
+				myMazePanel.repaint();
+			}
+		}
+	}
+	
+	private class southDoorInfo implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (doorChk("South")) {
+				doorSetup("South");
+				myMazePanel.repaint();
+			}
+		}
+	}
+	
+	private class westDoorInfo implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (doorChk("West")) {
+				doorSetup("West");
 				myMazePanel.repaint();
 			}
 		}

@@ -5,6 +5,10 @@ public class Question_Answer {
 	private String[] myChoices;
 	private String myAnswer;
 	
+	public Question_Answer() {
+		
+	}
+	
 	public Question_Answer(String theQuestion, String theChoices[], String theAnswer) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;

@@ -26,7 +26,7 @@ public final class Room implements Serializable {
 	 * @param theRow 
 	 * @param theCol
 	 */
-	public Room(int theX, int theY, int theRow, int theCol) {
+	public Room(int theX, int theY) {
 		this();
 		myX = theX;
 		myY = theY;
@@ -55,6 +55,19 @@ public final class Room implements Serializable {
 	public int getY() {
 		return this.myY;
 	}
+	
+	public Door[] getDoors() {
+		Door[] doors = new Door[myDoorMap.size()];
+		
+		for (Map.Entry<String, Door> pair : myDoorMap.entrySet()) {
+			int i = 0;
+			doors[i] = pair.getValue();
+			i++;
+		}
+		
+		return doors;
+	}
+	
 	public void setX(int theX) {
 		this.myX = theX;
 	}

@@ -7,6 +7,11 @@ import org.junit.jupiter.api.Test;
 import models.Door;
 import models.Question_Answer;
 
+/**
+ * Tests the doors
+ * @author Jason Hsu
+ *
+ */
 public class DoorTest extends TestCase {
 
 	private Door myDoor;

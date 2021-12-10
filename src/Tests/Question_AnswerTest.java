@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import models.Question_Answer;
 
+/**
+ * Tests the question and answer choices
+ * @author Jason Hsu
+ *
+ */
 public class Question_AnswerTest extends TestCase {
 
 	private Question_Answer myQA;

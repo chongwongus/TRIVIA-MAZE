@@ -452,6 +452,11 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Checks the door to the North
+	 * @author Jason Hsu
+	 *
+	 */
 	private class northDoorInfo implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (doorChk("North")) {
@@ -461,6 +466,11 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Checks the door to the East
+	 * @author Jason Hsu
+	 *
+	 */
 	private class eastDoorInfo implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (doorChk("East")) {
@@ -470,6 +480,11 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Checks the door to the South
+	 * @author Jason Hsu
+	 *
+	 */
 	private class southDoorInfo implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (doorChk("South")) {
@@ -479,6 +494,11 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Checks the door to the West
+	 * @author Jason Hsu
+	 *
+	 */
 	private class westDoorInfo implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (doorChk("West")) {

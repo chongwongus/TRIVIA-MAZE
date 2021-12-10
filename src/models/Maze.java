@@ -11,6 +11,11 @@ import models.Room;
 import models.QuestionDB;
 import models.Question_Answer;
 
+/**
+ * The Maze the player will play on to hold rooms that hold doors that hold questions.
+ * @author Jason Hsu
+ *
+ */
 public final class Maze implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;

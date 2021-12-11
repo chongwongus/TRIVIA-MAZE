@@ -20,7 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import controllers.Player;
+import controllers.*;
 import models.*;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -45,6 +45,10 @@ public class TriviaMazeGUI extends JFrame {
 	JButton myBtnE;
 	JButton myBtnS;
 	JButton myBtnW;
+	DoorButton myDBtnN;
+    DoorButton myDBtnE;
+    DoorButton myDBtnS;
+    DoorButton myDBtnW;
 	JMenuBar myMenuBar;
 	JMenu myMnFile;
 	JMenuItem myMntmSave;
@@ -58,6 +62,7 @@ public class TriviaMazeGUI extends JFrame {
 	JButton myBtnStart;
 	
 	static Maze myMaze;
+	static MazeInit myMazeInit;
 	private String myLastDirection;
 	static Door myDoorChk;
 	static Player myPlayer = new Player();
@@ -125,6 +130,30 @@ public class TriviaMazeGUI extends JFrame {
 		myBtnW.addActionListener(new goWest());
 		myBtnW.setBounds(526, 101, 50, 23);
 		myContentPane.add(myBtnW);
+		
+		myDBtnN = new DoorButton();
+        myDBtnN.setVisible(false);
+        myDBtnN.addActionListener(new northDoorInfo());
+        myDBtnN.setBounds(350, 67, 50, 25);
+        myContentPane.add(myDBtnN);
+
+        myDBtnE = new DoorButton();
+        myDBtnE.setVisible(false);
+        myDBtnE.addActionListener(new eastDoorInfo());
+        myDBtnE.setBounds(380, 101, 50, 25);
+        myContentPane.add(myDBtnE);
+
+        myDBtnS = new DoorButton();
+        myDBtnS.setVisible(false);
+        myDBtnS.addActionListener(new southDoorInfo());
+        myDBtnS.setBounds(350, 135, 50, 25);
+        myContentPane.add(myDBtnS);
+
+        myDBtnW = new DoorButton();
+        myDBtnW.setVisible(false);
+        myDBtnW.addActionListener(new westDoorInfo());
+        myDBtnW.setBounds(320, 101, 50, 25);
+        myContentPane.add(myDBtnW);
 		
 		myMenuBar = new JMenuBar();
 		myMenuBar.setBounds(0, 0, 700, 22);
@@ -254,7 +283,7 @@ public class TriviaMazeGUI extends JFrame {
 	 * @param theDirection
 	 */
 	private static void doorSetup(final String theDirection) {
-		//myDoorChk = myRoomChk[myPlayer.getLocationX()][myPlayer.getLocationY()].getDoor(theDirection);
+		myDoorChk = myMazeInit.getDoor();
 		String [] choices = myDoorChk.getChoices();
 		myLblQuestion.setText(myDoorChk.getQuestion());
 		myLblQuestion.setVisible(true);
@@ -277,32 +306,6 @@ public class TriviaMazeGUI extends JFrame {
 		}
 		myContentPane.repaint();
 		
-	}
-	
-	/**
-	 * Undoes the players last move
-	 * @param theDirection
-	 */
-	private static void moveReversal(final String theDirection) {
-		switch (theDirection) {
-		
-		case "North":
-			myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() + 1);
-			break;
-		
-		case "South":
-			myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() - 1);
-			break;
-			
-		case "East":
-			myPlayer.setLocation(myPlayer.getLocationX() - 1, myPlayer.getLocationY());
-			break;
-			
-		case "West":
-			myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
-			break;
-		
-		}
 	}
 	
 	/**
@@ -339,11 +342,11 @@ public class TriviaMazeGUI extends JFrame {
 	private class goNorth implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			if (myPlayer.getLocationY() > 1) {
-				if (doorChk("North") && !myDoorChk.isLocked()) {
+				if (myMazeInit.doorChk("North") && !myMazeInit.getDoor().isLocked()) {
 					if (!myDoorChk.hasPassedThrough()) {
 						doorSetup("North");
 					}
-					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() - 1);
+					myPlayer.moveNorth();
 					myLastDirection = "North";
 					myMazePanel.repaint();
 				} else {
@@ -365,9 +368,9 @@ public class TriviaMazeGUI extends JFrame {
 	private class goEast implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() < myMaze.getMyRow()) {
-				if (doorChk("East") && !myDoorChk.isLocked()) {
+				if (myMazeInit.doorChk("East") && !myMazeInit.getDoor().isLocked()) {
 					doorSetup("East");
-					myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
+					myPlayer.moveEast();
 					myLastDirection = "East";
 					myMazePanel.repaint();
 				} else {
@@ -389,9 +392,9 @@ public class TriviaMazeGUI extends JFrame {
 	private class goSouth implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationY() < myMaze.getMyCol() + 1) {
-				if (doorChk("South") && !myDoorChk.isLocked()) {
+				if (myMazeInit.doorChk("South") && !myMazeInit.getDoor().isLocked()) {
 					doorSetup("South");
-					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() + 1);
+					myPlayer.moveSouth();
 					myLastDirection = "South";
 					myMazePanel.repaint();
 				} else {
@@ -413,9 +416,9 @@ public class TriviaMazeGUI extends JFrame {
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() > 0) {
-				if (doorChk("West") && !myDoorChk.isLocked()) {
+				if (myMazeInit.doorChk("West") && !myMazeInit.getDoor().isLocked()) {
 					doorSetup("West");
-					myPlayer.setLocation(myPlayer.getLocationX() - 1, myPlayer.getLocationY());
+					myPlayer.moveWest();
 					myLastDirection = "West";
 					myMazePanel.repaint();
 				} else {
@@ -428,6 +431,66 @@ public class TriviaMazeGUI extends JFrame {
 			}
 		}
 	}
+	
+	/**
+     * Checks the door to the North
+     * 
+     * @author Jason Hsu
+     *
+     */
+    private class northDoorInfo implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (myMazeInit.doorChk("North")) {
+                doorSetup("North");
+                myMazePanel.repaint();
+            }
+        }
+    }
+
+    /**
+     * Checks the door to the East
+     * 
+     * @author Jason Hsu
+     *
+     */
+    private class eastDoorInfo implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (myMazeInit.doorChk("East")) {
+                doorSetup("East");
+                myMazePanel.repaint();
+            }
+        }
+    }
+
+    /**
+     * Checks the door to the South
+     * 
+     * @author Jason Hsu
+     *
+     */
+    private class southDoorInfo implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (myMazeInit.doorChk("South")) {
+                doorSetup("South");
+                myMazePanel.repaint();
+            }
+        }
+    }
+
+    /**
+     * Checks the door to the West
+     * 
+     * @author Jason Hsu
+     *
+     */
+    private class westDoorInfo implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (myMazeInit.doorChk("West")) {
+                doorSetup("West");
+                myMazePanel.repaint();
+            }
+        }
+    }
 	
 	/**
 	 * Saves the game by calling the SaveLoad class
@@ -509,11 +572,11 @@ public class TriviaMazeGUI extends JFrame {
 	private class startGame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Initialize maze & player
-			setMazeSize();
-			myMaze.initializeRooms();
-			myMaze.initializeRoomQuestions();
-			myRoomChk = myMaze.getMyMaze();
-			myPlayer.setLocation(1, 1);
+			myMazeInit = new MazeInit(myMaze, myDoorChk, myPlayer, myRoomChk);
+			myMazeInit.setMazeSize(myTxtFieldCol, myTxtFieldCol);
+			myMazeInit.initialize();
+			myMaze = myMazeInit.getMaze();
+			myPlayer = myMazeInit.getPlayer();
 			myLblInstructions.setVisible(false);
 			myLblOfColumns.setVisible(false);
 			myLblOfRows.setVisible(false);
@@ -521,39 +584,11 @@ public class TriviaMazeGUI extends JFrame {
 			myTxtFieldRow.setVisible(false);
 			myBtnStart.setVisible(false);
 			myMazePanel.setVisible(true);
+			myDBtnN.setVisible(true);
+            myDBtnE.setVisible(true);
+            myDBtnS.setVisible(true);
+            myDBtnW.setVisible(true);
 			myMazePanel.repaint();
-		}
-	}
-	
-	/**
-	 * Checks if a String can be parsed into an int
-	 * @param theString
-	 * @return
-	 */
-	private static boolean isInt(final String theString) {
-		try {
-			Integer.parseInt(theString);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Sets up the size of the maze based on what was
-	 * entered into the text fields
-	 * Note: Any number entered that is greater than 4 causes an exception to be thrown
-	 * This is most likely because of our database size since thats when the error occurs  
-	 */
-	private static void setMazeSize() {
-		if (isInt(myTxtFieldRow.getText()) && isInt(myTxtFieldCol.getText())) {
-			int row = Integer.parseInt((myTxtFieldRow.getText()));
-			int col = Integer.parseInt((myTxtFieldCol.getText()));
-			if (row > 4 && col > 4) {
-				myMaze = new Maze(row, col);
-			}
-		} else {
-			myMaze = new Maze();
 		}
 	}
 	
@@ -567,7 +602,7 @@ public class TriviaMazeGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (myRdbtnChoiceA == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceA.getText())) {
-					moveReversal(myLastDirection);
+					myPlayer.moveReversal(myLastDirection);
 					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				}
@@ -580,7 +615,7 @@ public class TriviaMazeGUI extends JFrame {
 				myLblResult.setVisible(true);
 			} else if (myRdbtnChoiceB == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceB.getText())) {
-					moveReversal(myLastDirection);
+					myPlayer.moveReversal(myLastDirection);
 					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				} 
@@ -593,7 +628,7 @@ public class TriviaMazeGUI extends JFrame {
 				myLblResult.setVisible(true);
 			} else if (myRdbtnChoiceC == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceC.getText())) {
-					moveReversal(myLastDirection);
+					myPlayer.moveReversal(myLastDirection);
 					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				} 
@@ -606,7 +641,7 @@ public class TriviaMazeGUI extends JFrame {
 				myLblResult.setVisible(true);
 			} else {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceD.getText())) {
-					moveReversal(myLastDirection);
+					myPlayer.moveReversal(myLastDirection);
 					myLblResult.setText("Wrong!");
 					myMazePanel.repaint();
 				}

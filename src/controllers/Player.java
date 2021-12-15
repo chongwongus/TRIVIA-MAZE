@@ -15,7 +15,7 @@ public class Player implements Serializable {
     private int myPlayerX;
     private int myPlayerY;
 
-    private MazeInit myMazeInit;
+    private MazeControl myMazeCon;
     
     /**
      * Default constructor

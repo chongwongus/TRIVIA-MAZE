@@ -45,10 +45,6 @@ public class TriviaMazeGUI extends JFrame {
 	JButton myBtnE;
 	JButton myBtnS;
 	JButton myBtnW;
-	DoorButton myDBtnN;
-    DoorButton myDBtnE;
-    DoorButton myDBtnS;
-    DoorButton myDBtnW;
 	JMenuBar myMenuBar;
 	JMenu myMnFile;
 	JMenuItem myMntmSave;
@@ -62,7 +58,7 @@ public class TriviaMazeGUI extends JFrame {
 	JButton myBtnStart;
 	
 	static Maze myMaze;
-	static MazeInit myMazeInit;
+	static MazeControl myMazeCon;
 	private String myLastDirection;
 	static Door myDoorChk;
 	static Player myPlayer = new Player();
@@ -130,31 +126,7 @@ public class TriviaMazeGUI extends JFrame {
 		myBtnW.addActionListener(new goWest());
 		myBtnW.setBounds(526, 101, 50, 23);
 		myContentPane.add(myBtnW);
-		
-		myDBtnN = new DoorButton();
-        myDBtnN.setVisible(false);
-        myDBtnN.addActionListener(new northDoorInfo());
-        myDBtnN.setBounds(350, 67, 50, 25);
-        myContentPane.add(myDBtnN);
-
-        myDBtnE = new DoorButton();
-        myDBtnE.setVisible(false);
-        myDBtnE.addActionListener(new eastDoorInfo());
-        myDBtnE.setBounds(380, 101, 50, 25);
-        myContentPane.add(myDBtnE);
-
-        myDBtnS = new DoorButton();
-        myDBtnS.setVisible(false);
-        myDBtnS.addActionListener(new southDoorInfo());
-        myDBtnS.setBounds(350, 135, 50, 25);
-        myContentPane.add(myDBtnS);
-
-        myDBtnW = new DoorButton();
-        myDBtnW.setVisible(false);
-        myDBtnW.addActionListener(new westDoorInfo());
-        myDBtnW.setBounds(320, 101, 50, 25);
-        myContentPane.add(myDBtnW);
-		
+			
 		myMenuBar = new JMenuBar();
 		myMenuBar.setBounds(0, 0, 700, 22);
 		myContentPane.add(myMenuBar);
@@ -283,7 +255,7 @@ public class TriviaMazeGUI extends JFrame {
 	 * @param theDirection
 	 */
 	private static void doorSetup(final String theDirection) {
-		myDoorChk = myMazeInit.getDoor();
+		myDoorChk = myMazeCon.getDoor();
 		String [] choices = myDoorChk.getChoices();
 		myLblQuestion.setText(myDoorChk.getQuestion());
 		myLblQuestion.setVisible(true);
@@ -342,7 +314,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goNorth implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			if (myPlayer.getLocationY() > 1) {
-				if (myMazeInit.doorChk("North") && !myMazeInit.getDoor().isLocked()) {
+				if (myMazeCon.doorChk("North") && !myMazeCon.getDoor().isLocked()) {
 					if (!myDoorChk.hasPassedThrough()) {
 						doorSetup("North");
 					}
@@ -368,7 +340,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goEast implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() < myMaze.getMyRow()) {
-				if (myMazeInit.doorChk("East") && !myMazeInit.getDoor().isLocked()) {
+				if (myMazeCon.doorChk("East") && !myMazeCon.getDoor().isLocked()) {
 					doorSetup("East");
 					myPlayer.moveEast();
 					myLastDirection = "East";
@@ -392,7 +364,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goSouth implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationY() < myMaze.getMyCol() + 1) {
-				if (myMazeInit.doorChk("South") && !myMazeInit.getDoor().isLocked()) {
+				if (myMazeCon.doorChk("South") && !myMazeCon.getDoor().isLocked()) {
 					doorSetup("South");
 					myPlayer.moveSouth();
 					myLastDirection = "South";
@@ -416,7 +388,7 @@ public class TriviaMazeGUI extends JFrame {
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() > 0) {
-				if (myMazeInit.doorChk("West") && !myMazeInit.getDoor().isLocked()) {
+				if (myMazeCon.doorChk("West") && !myMazeCon.getDoor().isLocked()) {
 					doorSetup("West");
 					myPlayer.moveWest();
 					myLastDirection = "West";
@@ -440,7 +412,7 @@ public class TriviaMazeGUI extends JFrame {
      */
     private class northDoorInfo implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (myMazeInit.doorChk("North")) {
+            if (myMazeCon.doorChk("North")) {
                 doorSetup("North");
                 myMazePanel.repaint();
             }
@@ -455,7 +427,7 @@ public class TriviaMazeGUI extends JFrame {
      */
     private class eastDoorInfo implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (myMazeInit.doorChk("East")) {
+            if (myMazeCon.doorChk("East")) {
                 doorSetup("East");
                 myMazePanel.repaint();
             }
@@ -470,7 +442,7 @@ public class TriviaMazeGUI extends JFrame {
      */
     private class southDoorInfo implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (myMazeInit.doorChk("South")) {
+            if (myMazeCon.doorChk("South")) {
                 doorSetup("South");
                 myMazePanel.repaint();
             }
@@ -485,7 +457,7 @@ public class TriviaMazeGUI extends JFrame {
      */
     private class westDoorInfo implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (myMazeInit.doorChk("West")) {
+            if (myMazeCon.doorChk("West")) {
                 doorSetup("West");
                 myMazePanel.repaint();
             }
@@ -572,11 +544,11 @@ public class TriviaMazeGUI extends JFrame {
 	private class startGame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Initialize maze & player
-			myMazeInit = new MazeInit(myMaze, myDoorChk, myPlayer, myRoomChk);
-			myMazeInit.setMazeSize(myTxtFieldCol, myTxtFieldCol);
-			myMazeInit.initialize();
-			myMaze = myMazeInit.getMaze();
-			myPlayer = myMazeInit.getPlayer();
+			myMazeCon = new MazeControl(myMaze, myDoorChk, myPlayer, myRoomChk);
+			myMazeCon.setMazeSize(myTxtFieldCol, myTxtFieldCol);
+			myMazeCon.initialize();
+			myMaze = myMazeCon.getMaze();
+			myPlayer = myMazeCon.getPlayer();
 			myLblInstructions.setVisible(false);
 			myLblOfColumns.setVisible(false);
 			myLblOfRows.setVisible(false);
@@ -584,10 +556,6 @@ public class TriviaMazeGUI extends JFrame {
 			myTxtFieldRow.setVisible(false);
 			myBtnStart.setVisible(false);
 			myMazePanel.setVisible(true);
-			myDBtnN.setVisible(true);
-            myDBtnE.setVisible(true);
-            myDBtnS.setVisible(true);
-            myDBtnW.setVisible(true);
 			myMazePanel.repaint();
 		}
 	}

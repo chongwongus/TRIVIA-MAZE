@@ -9,7 +9,7 @@ import models.*;
  * @author Roland Hanson
  *
  */
-public class MazeInit {
+public class MazeControl {
 	
 	Maze myMaze;
 	//private String myLastDirection;
@@ -17,11 +17,11 @@ public class MazeInit {
 	Player myPlayer = new Player();
 	Room[][] myRooms;
 	
-	public MazeInit() {
+	public MazeControl() {
 		
 	}
 	
-	public MazeInit(final Maze theMaze, final Door theDoor, final Player thePlayer, final Room[][] theRooms) {
+	public MazeControl(final Maze theMaze, final Door theDoor, final Player thePlayer, final Room[][] theRooms) {
 		myMaze = theMaze;
 		myDoor = theDoor;
 		myPlayer = thePlayer;

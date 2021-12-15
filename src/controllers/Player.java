@@ -35,19 +35,6 @@ public class Player implements Serializable {
         myPlayerY = y;
     }
 
-    public void setLocation(final int x, final int y) {
-        myPlayerX = x;
-        myPlayerY = y;
-    }
-
-    public int getLocationX() {
-        return this.myPlayerX;
-    }
-
-    public int getLocationY() {
-        return this.myPlayerY;
-    }
-
 	public void moveNorth() {
 		setLocation(myPlayerX, myPlayerY - 1);
 	}
@@ -89,5 +76,18 @@ public class Player implements Serializable {
 		
 		}
 	}
-    
+	
+	public void setLocation(final int x, final int y) {
+		myPlayerX = x;
+		myPlayerY = y;
+	}
+	
+	public int getLocationX() {
+		return this.myPlayerX;
+	}
+	
+	public int getLocationY() {
+		return this.myPlayerY;
+	}
 }
+

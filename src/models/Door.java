@@ -2,7 +2,7 @@ package models;
 
 /**
  * Unlocked or locked depending on the outcome of the users answer 
- * @author Roland Hanson
+ * @author Roland Hanson, Jason Hsu
  *
  */
 public class Door {
@@ -45,6 +45,14 @@ public class Door {
 		return myQA.getQuestion();
 	}
 	
+	public String getAnswer() {
+		return myQA.getAnswer();
+	}
+	
+	public void setQA(Question_Answer theQA) {
+		myQA = theQA;
+	}
+	
 	/**
 	 * Checks if a door has been passed through before
 	 * So far only works one way
@@ -54,5 +62,8 @@ public class Door {
 		return myDoorPass;
 	}
 	
+	public boolean isOpen() {
+		return myOpenDoor;
+	}
 	
 }

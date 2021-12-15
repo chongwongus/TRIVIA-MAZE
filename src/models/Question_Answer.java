@@ -1,10 +1,25 @@
 package models;
 
+/**
+ * A class to hold questions, answers and answer choices.
+ * @author Jason Hsu
+ *
+ */
 public class Question_Answer {
 	private String myQuestion;
 	private String[] myChoices;
 	private String myAnswer;
 	
+	public Question_Answer() {
+		
+	}
+	
+	/**
+	 * 
+	 * @param theQuestion the question
+	 * @param theChoices the answer choices
+	 * @param theAnswer the answer
+	 */
 	public Question_Answer(String theQuestion, String theChoices[], String theAnswer) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
@@ -39,12 +54,4 @@ public class Question_Answer {
 	public String[] getChoices() {
 		return this.myChoices;
 	}
-	
-	public void printChoices() {
-		int i;
-		for(i = 0; i < myChoices.length; i++) {
-			System.out.println(i + ") " + myChoices[i]);
-		}
-	}
-
 }

@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 
 /**
  * Saves and loads the game with serialization
- * 
  * @author Roland Hanson, Richard Le
  *
  */

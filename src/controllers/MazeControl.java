@@ -40,6 +40,10 @@ public class MazeControl {
 		return this.myDoor;
 	}
 	
+	public Room[][] getRooms(){
+		return this.myRooms;
+	}
+	
 	public void initialize() {
 		myMaze.initializeRooms();
 		myMaze.initializeRoomQuestions();
@@ -84,12 +88,24 @@ public class MazeControl {
 	 * @param theDirection
 	 * @return
 	 */
-	public boolean doorChk(final String theDirection) {
-		if (myRooms[myPlayer.getLocationY()][myPlayer.getLocationX()].hasDoor(theDirection)) {
-			myDoor = myRooms[myPlayer.getLocationY()][myPlayer.getLocationX()].getDoor(theDirection);
-			return true;
-		} 
-		return false;
+	public boolean doorChkN() {
+		myDoor = myRooms[myPlayer.getLocationY() - 1][myPlayer.getLocationX()].getRealDoor();
+		return true;
+	}
+	
+	public boolean doorChkE() {
+		myDoor = myRooms[myPlayer.getLocationY()][myPlayer.getLocationX() + 1].getRealDoor();
+		return true;
+	}
+	
+	public boolean doorChkS() {
+		myDoor = myRooms[myPlayer.getLocationY() + 1][myPlayer.getLocationX()].getRealDoor();
+		return true;
+	}
+	
+	public boolean doorChkW() {
+		myDoor = myRooms[myPlayer.getLocationY()][myPlayer.getLocationX() - 1].getRealDoor();
+		return true;
 	}
 	
 	public void doorBtnInit() {

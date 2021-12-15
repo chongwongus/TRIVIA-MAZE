@@ -43,6 +43,4 @@ public class Player implements Serializable{
 	public int getLocationY() {
 		return this.myPlayerY;
 	}
-
-	
 }

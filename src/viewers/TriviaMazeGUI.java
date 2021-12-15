@@ -45,10 +45,6 @@ public class TriviaMazeGUI extends JFrame {
 	JButton myBtnE;
 	JButton myBtnS;
 	JButton myBtnW;
-	DoorButton myDBtnN;
-	DoorButton myDBtnE;
-	DoorButton myDBtnS;
-	DoorButton myDBtnW;
 	JMenuBar myMenuBar;
 	JMenu myMnFile;
 	JMenuItem myMntmSave;
@@ -129,26 +125,6 @@ public class TriviaMazeGUI extends JFrame {
 		myBtnW.addActionListener(new goWest());
 		myBtnW.setBounds(526, 101, 50, 23);
 		myContentPane.add(myBtnW);
-		
-		myDBtnN = new DoorButton();
-		myDBtnN.addActionListener(new northDoorInfo());
-		myDBtnN.setBounds(350,67,50,25);
-		myContentPane.add(myDBtnN);
-		
-		myDBtnE = new DoorButton();
-		myDBtnE.addActionListener(new eastDoorInfo());
-		myDBtnE.setBounds(380,101,50,25);
-		myContentPane.add(myDBtnE);
-		
-		myDBtnS = new DoorButton();
-		myDBtnS.addActionListener(new southDoorInfo());
-		myDBtnS.setBounds(350,135,50,25);
-		myContentPane.add(myDBtnS);
-		
-		myDBtnW = new DoorButton();
-		myDBtnW.addActionListener(new westDoorInfo());
-		myDBtnW.setBounds(320,101,50,25);
-		myContentPane.add(myDBtnW);
 		
 		myMenuBar = new JMenuBar();
 		myMenuBar.setBounds(0, 0, 700, 22);
@@ -264,12 +240,24 @@ public class TriviaMazeGUI extends JFrame {
 	 * @param theDirection
 	 * @return
 	 */
-	private static boolean doorChk(final String theDirection) {
-		if (myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].hasDoor(theDirection)) {
-			myDoorChk = myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX()].getDoor(theDirection);
-			return true;
-		} 
-		return false;
+	private static boolean doorChkN() {
+		myDoorChk = myRoomChk[myPlayer.getLocationY() - 1][myPlayer.getLocationX()].getRealDoor();
+		return true;
+	}
+	
+	private static boolean doorChkE() {
+		myDoorChk = myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX() + 1].getRealDoor();
+		return true;
+	}
+	
+	private static boolean doorChkS() {
+		myDoorChk = myRoomChk[myPlayer.getLocationY() + 1][myPlayer.getLocationX()].getRealDoor();
+		return true;
+	}
+	
+	private static boolean doorChkW() {
+		myDoorChk = myRoomChk[myPlayer.getLocationY()][myPlayer.getLocationX() - 1].getRealDoor();
+		return true;
 	}
 	
 	/**
@@ -288,6 +276,8 @@ public class TriviaMazeGUI extends JFrame {
 				myRdbtnChoiceB.setText(choices[1]);
 				myRdbtnChoiceA.setVisible(true);
 				myRdbtnChoiceB.setVisible(true);
+				myRdbtnChoiceC.setVisible(false);
+				myRdbtnChoiceD.setVisible(false);
 		} else {
 				myRdbtnChoiceA.setText(choices[0]);
 				myRdbtnChoiceB.setText(choices[1]);
@@ -298,15 +288,24 @@ public class TriviaMazeGUI extends JFrame {
 				myRdbtnChoiceC.setVisible(true);
 				myRdbtnChoiceD.setVisible(true);
 		}
-		myContentPane.repaint();
-		
+		myContentPane.repaint();	
+	}
+	
+	private static void correctPass() {
+		myLblQuestion.setVisible(false);
+		myLblResult.setVisible(true);
+		myLblResult.setText("Correct!");
+		myRdbtnChoiceA.setVisible(false);
+		myRdbtnChoiceB.setVisible(false);
+		myRdbtnChoiceC.setVisible(false);
+		myRdbtnChoiceD.setVisible(false);
 	}
 	
 	/**
 	 * Undoes the players last move
 	 * @param theDirection
 	 */
-	private static void moveReversal(final String theDirection) {
+	private void moveReversal(final String theDirection) {	
 		switch (theDirection) {
 		
 		case "North":
@@ -362,12 +361,20 @@ public class TriviaMazeGUI extends JFrame {
 	private class goNorth implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			if (myPlayer.getLocationY() > 1) {
-				if (doorChk("North") && !myDoorChk.isLocked()) {
+				if (doorChkN() && !myDoorChk.isLocked()) {
 					if (!myDoorChk.hasPassedThrough()) {
 						doorSetup("North");
+						myBtnN.setEnabled(false);
+					    myBtnE.setEnabled(false);
+						myBtnS.setEnabled(false);
+						myBtnW.setEnabled(false);
+					} else {
+						correctPass();
 					}
+					
 					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() - 1);
 					myLastDirection = "North";
+					checkEnd();
 					myMazePanel.repaint();
 				} else {
 					myLblResult.setText("Nope, can't go that way!");
@@ -388,10 +395,20 @@ public class TriviaMazeGUI extends JFrame {
 	private class goEast implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() < myMaze.getMyRow()) {
-				if (doorChk("East") && !myDoorChk.isLocked()) {
-					doorSetup("East");
+				if (doorChkE() && !myDoorChk.isLocked()) {
+					if (!myDoorChk.hasPassedThrough()) {
+						doorSetup("East");
+						myBtnN.setEnabled(false);
+					    myBtnE.setEnabled(false);
+						myBtnS.setEnabled(false);
+						myBtnW.setEnabled(false);
+					} else {
+						correctPass();
+					}
+					
 					myPlayer.setLocation(myPlayer.getLocationX() + 1, myPlayer.getLocationY());
 					myLastDirection = "East";
+					checkEnd();
 					myMazePanel.repaint();
 				} else {
 					myLblResult.setText("Nope, can't go that way!");
@@ -412,10 +429,20 @@ public class TriviaMazeGUI extends JFrame {
 	private class goSouth implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationY() < myMaze.getMyCol() + 1) {
-				if (doorChk("South") && !myDoorChk.isLocked()) {
-					doorSetup("South");
+				if (doorChkS() && !myDoorChk.isLocked()) {
+					if (!myDoorChk.hasPassedThrough()) {
+						doorSetup("South");
+						myBtnN.setEnabled(false);
+					    myBtnE.setEnabled(false);
+						myBtnS.setEnabled(false);
+						myBtnW.setEnabled(false);
+					} else {
+						correctPass();
+					}
+					
 					myPlayer.setLocation(myPlayer.getLocationX(), myPlayer.getLocationY() + 1);
 					myLastDirection = "South";
+					checkEnd();
 					myMazePanel.repaint();
 				} else {
 					myLblResult.setText("Nope, can't go that way!");
@@ -436,10 +463,20 @@ public class TriviaMazeGUI extends JFrame {
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (myPlayer.getLocationX() > 0) {
-				if (doorChk("West") && !myDoorChk.isLocked()) {
-					doorSetup("West");
+				if (doorChkW() && !myDoorChk.isLocked()) {
+					if (!myDoorChk.hasPassedThrough()) {
+						doorSetup("West");
+						myBtnN.setEnabled(false);
+					    myBtnE.setEnabled(false);
+						myBtnS.setEnabled(false);
+						myBtnW.setEnabled(false);
+					} else {
+						correctPass();
+					}
+					
 					myPlayer.setLocation(myPlayer.getLocationX() - 1, myPlayer.getLocationY());
 					myLastDirection = "West";
+					checkEnd();
 					myMazePanel.repaint();
 				} else {
 					myLblResult.setText("Nope, can't go that way!");
@@ -452,59 +489,15 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
-	/**
-	 * Checks the door to the North
-	 * @author Jason Hsu
-	 *
-	 */
-	private class northDoorInfo implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (doorChk("North")) {
-				doorSetup("North");
-				myMazePanel.repaint();
-			}
-		}
-	}
-	
-	/**
-	 * Checks the door to the East
-	 * @author Jason Hsu
-	 *
-	 */
-	private class eastDoorInfo implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (doorChk("East")) {
-				doorSetup("East");
-				myMazePanel.repaint();
-			}
-		}
-	}
-	
-	/**
-	 * Checks the door to the South
-	 * @author Jason Hsu
-	 *
-	 */
-	private class southDoorInfo implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (doorChk("South")) {
-				doorSetup("South");
-				myMazePanel.repaint();
-			}
-		}
-	}
-	
-	/**
-	 * Checks the door to the West
-	 * @author Jason Hsu
-	 *
-	 */
-	private class westDoorInfo implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (doorChk("West")) {
-				doorSetup("West");
-				myMazePanel.repaint();
-			}
+	private void checkEnd() {
+		if (myMaze.getMyMaze()[myPlayer.getLocationY()][myPlayer.getLocationX()].getId() == 'E') {
+			myLblResult.setText("You found the exit!");
+			myLblResult.setVisible(true);
+			myLblQuestion.setVisible(false);
+			myRdbtnChoiceA.setVisible(false);
+			myRdbtnChoiceB.setVisible(false);
+			myRdbtnChoiceC.setVisible(false);
+			myRdbtnChoiceD.setVisible(false);
 		}
 	}
 	
@@ -592,7 +585,7 @@ public class TriviaMazeGUI extends JFrame {
 			myMaze.initializeRooms();
 			myMaze.initializeRoomQuestions();
 			myRoomChk = myMaze.getMyMaze();
-			myPlayer.setLocation(1, 1);
+			setPlayer();
 			myLblInstructions.setVisible(false);
 			myLblOfColumns.setVisible(false);
 			myLblOfRows.setVisible(false);
@@ -636,6 +629,17 @@ public class TriviaMazeGUI extends JFrame {
 		}
 	}
 	
+	private void setPlayer() {
+		for (int i = 1; i <= myMaze.getMyCol(); i++) {
+			for (int j = 1; j <= myMaze.getMyRow(); j++) {
+				if (myMaze.getMyMaze()[i][j].getId() == 'S') {
+					myPlayer.setLocation(j, i);
+					break;
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Checks to see if the selected choice is correct
 	 * Also resets display for the next door
@@ -644,6 +648,11 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class RdbtnChoiceActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			myBtnN.setEnabled(true);
+		    myBtnE.setEnabled(true);
+			myBtnS.setEnabled(true);
+			myBtnW.setEnabled(true);
+			
 			if (myRdbtnChoiceA == e.getSource()) {
 				if (!myDoorChk.checkAnswer(myRdbtnChoiceA.getText())) {
 					moveReversal(myLastDirection);

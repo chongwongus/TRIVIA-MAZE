@@ -119,42 +119,8 @@ public final class Maze implements Serializable, Cloneable {
 		 */
 		for (int i = 1; i <= myCol; i++) {
 			for (int j = 1; j <= myRow; j++) {
-
-				if (myMaze[i - 1][j] != null) {
-					if (myMaze[i - 1][j].hasDoor("South")) {
-						myMaze[i][j].createExistingDoor("North", myMaze[i - 1][j].getDoor("South"));
-					} else {
-						myMaze[i][j].createDoor("North", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
-
-				if (myMaze[i][j - 1] != null) {
-					if (myMaze[i][j - 1].hasDoor("East")) {
-						myMaze[i][j].createExistingDoor("West", myMaze[i][j - 1].getDoor("East"));
-					} else {
-						myMaze[i][j].createDoor("West", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
-
-				if (myMaze[i + 1][j] != null) {
-					if (myMaze[i + 1][j].hasDoor("North")) {
-						myMaze[i][j].createExistingDoor("South", myMaze[i + 1][j].getDoor("North"));
-					} else {
-						myMaze[i][j].createDoor("South", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
-
-				if (myMaze[i][j + 1] != null) {
-					if (myMaze[i][j + 1].hasDoor("West")) {
-						myMaze[i][j].createExistingDoor("East", myMaze[i][j + 1].getDoor("West"));
-					} else {
-						myMaze[i][j].createDoor("East", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
+				myMaze[i][j].createSingle(allTriviaQ.get(listIndex));
+				listIndex++;
 			}
 		}
 	}

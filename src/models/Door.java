@@ -49,6 +49,10 @@ public class Door {
 		return myQA.getAnswer();
 	}
 	
+	public void setQA(Question_Answer theQA) {
+		myQA = theQA;
+	}
+	
 	/**
 	 * Checks if a door has been passed through before
 	 * So far only works one way

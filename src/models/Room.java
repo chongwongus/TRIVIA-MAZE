@@ -16,11 +16,13 @@ public final class Room implements Serializable {
 
 	private int myX;
 	private int myY;
-	private Map<String, Door> myDoorMap; 
+	private Map<String, Door> myDoorMap;
+	private Door myDoor;
 	private char myId;
 	
 	public Room() {
 		myDoorMap = new HashMap<String, Door>();
+		myDoor = new Door();
 	}
 	
 	/**
@@ -44,6 +46,10 @@ public final class Room implements Serializable {
 		myDoorMap.put(theDirection, new Door(theRoomTrivia));
 	}
 	
+	public void createSingle(Question_Answer theRoomTrivia) {
+		myDoor.setQA(theRoomTrivia);
+	}
+	
 	/**
 	 * Uses a reference to a previously created door.
 	 * @param theDirection String direction key
@@ -55,6 +61,10 @@ public final class Room implements Serializable {
 	
 	public Door getDoor(String theDirection) {
 		return myDoorMap.get(theDirection);
+	}
+	
+	public Door getRealDoor() {
+		return myDoor;
 	}
 	
 	public boolean hasDoor(String theDirection) {

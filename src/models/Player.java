@@ -1,4 +1,4 @@
-package controllers;
+package models;
 
 import java.io.Serializable;
 
@@ -14,8 +14,6 @@ public class Player implements Serializable {
 
     private int myPlayerX;
     private int myPlayerY;
-
-    private MazeControl myMazeCon;
     
     /**
      * Default constructor

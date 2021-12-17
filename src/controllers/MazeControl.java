@@ -1,5 +1,10 @@
 package controllers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import models.*;
@@ -9,7 +14,7 @@ import models.*;
  * @author Roland Hanson
  *
  */
-public class MazeControl {
+public class MazeControl implements ActionListener{
 	
 	Maze myMaze;
 	//private String myLastDirection;
@@ -45,10 +50,14 @@ public class MazeControl {
 	}
 	
 	public void initialize() {
+		int x = 0;
+		int y = 0;
 		myMaze.initializeRooms();
 		myMaze.initializeRoomQuestions();
+		x = ThreadLocalRandom.current().nextInt(1, myMaze.getMyRow() + 1);
+		y = ThreadLocalRandom.current().nextInt(1, myMaze.getMyRow() + 1);
 		myRooms = myMaze.getMyMaze();
-		myPlayer.setLocation(1, 1);
+		myPlayer.setLocation(x, y);
 	}
 	
 	/**
@@ -107,10 +116,10 @@ public class MazeControl {
 		myDoor = myRooms[myPlayer.getLocationY()][myPlayer.getLocationX() - 1].getRealDoor();
 		return true;
 	}
-	
-	public void doorBtnInit() {
+
+	public void actionPerformed(ActionEvent e) {
+		
 		
 	}
-	
 	
 }

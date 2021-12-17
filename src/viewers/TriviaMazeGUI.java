@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -26,7 +27,9 @@ import javax.swing.SwingConstants;
 import controllers.*;
 import models.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
@@ -298,14 +301,15 @@ public class TriviaMazeGUI extends JFrame {
 	/**
 	 * Displays the maze
 	 * @author Roland Hanson
-	 *
 	 */
 	private class mazePanel extends JPanel{
 		
 		private mazePanel() {
 			
 		}
-		
+		/**
+		 * Draws the maze grid and player location
+		 */
 		public void paintComponent(Graphics g) {
 			int bxWidth = 30;
 			int bxHeight = 30;
@@ -317,6 +321,7 @@ public class TriviaMazeGUI extends JFrame {
 				}
 			}
 			g.drawString("<O>", myPlayer.getLocationX() * bxWidth, myPlayer.getLocationY() * bxHeight);
+			
 		}
 		
 	}
@@ -324,7 +329,6 @@ public class TriviaMazeGUI extends JFrame {
 	/**
 	 * Makes the player go north
 	 * @author Roland Hanson
-	 *
 	 */
 	private class goNorth implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
@@ -360,7 +364,6 @@ public class TriviaMazeGUI extends JFrame {
 	/**
 	 * Makes the player go east
 	 * @author Roland Hanson
-	 *
 	 */
 	private class goEast implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -394,11 +397,10 @@ public class TriviaMazeGUI extends JFrame {
 	/**
 	 * Makes the player go south
 	 * @author Roland Hanson
-	 *
 	 */
 	private class goSouth implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (myPlayer.getLocationY() < myMaze.getMyCol() + 1) {
+			if (myPlayer.getLocationY() < myMaze.getMyCol()) {
 				if (myMazeCon.doorChkS() && !myMazeCon.getDoor().isLocked()) {
 					if (!myMazeCon.getDoor().hasPassedThrough()) {
 						doorSetup("South");
@@ -432,7 +434,7 @@ public class TriviaMazeGUI extends JFrame {
 	 */
 	private class goWest implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (myPlayer.getLocationX() > 0) {
+			if (myPlayer.getLocationX() > 1) {
 				if (myMazeCon.doorChkW() && !myMazeCon.getDoor().isLocked()) {
 					if (!myMazeCon.getDoor().hasPassedThrough()) {
 						doorSetup("West");
@@ -464,6 +466,7 @@ public class TriviaMazeGUI extends JFrame {
 	private void checkEnd() {
 		if (myMazeCon.getRooms()[myPlayer.getLocationY()][myPlayer.getLocationX()].getId() == 'E') {
 			myLblResult.setText("You found the exit!");
+			playWinSound();
 			myLblResult.setVisible(true);
 			myLblQuestion.setVisible(false);
 			myRdbtnChoiceA.setVisible(false);
@@ -497,17 +500,78 @@ public class TriviaMazeGUI extends JFrame {
 	 * Checks to see if the player is trapped 
 	 */
 	private void chkTrapped() {
+		int doors = 0;
+		if (myPlayer.getLocationY() > 1) {
+			if (myMazeCon.doorChkN() && !myMazeCon.getDoor().isLocked()) {
+				doors++;
+			}
+		}
+		if (myPlayer.getLocationX() < myMaze.getMyRow()) {
+			if (myMazeCon.doorChkE() && !myMazeCon.getDoor().isLocked()) {
+				doors++;
+			}
+		}
+		if (myPlayer.getLocationY() < myMaze.getMyCol()) {
+			if (myMazeCon.doorChkS() && !myMazeCon.getDoor().isLocked()) {
+				doors++;
+			}
+		}
+		if (myPlayer.getLocationX() > 1) {
+			if (myMazeCon.doorChkW() && !myMazeCon.getDoor().isLocked()) {
+				doors++;
+			}
+		}
+		if (doors == 0) {
 		playLoseSound();
 		myLblResult.setText("You're trapped!");
+		myBtnN.setEnabled(false);
+	    myBtnE.setEnabled(false);
+		myBtnS.setEnabled(false);
+		myBtnW.setEnabled(false);
+		}
 	}
 	
 	/**
-	 * Plays the hit sound when called
+	 * Plays the incorrect answer sound when called
 	 * Code from stackoverflow (modified)
 	 */
 	private void playHitSound() {
 		try {
 			File file = new File("Incorrect.wav");
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Plays the correct answer sound when called
+	 * Code from stackoverflow (modified)
+	 */
+	private void playCorrectSound() {
+		try {
+			File file = new File("Correct.wav");
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Plays the win sound when called
+	 * Code from stackoverflow (modified)
+	 */
+	private void playWinSound() {
+		try {
+			File file = new File("Win.wav");
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
@@ -595,17 +659,6 @@ public class TriviaMazeGUI extends JFrame {
 	}
 	
 	/**
-	 * Exits the program
-	 * @author Roland Hanson
-	 *
-	 */
-	private class exitGame implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
-			System.exit(EXIT_ON_CLOSE);
-		}
-	}
-	
-	/**
 	 * Initializes the maze once the start button is pressed
 	 * @author Roland Hanson
 	 *
@@ -631,6 +684,17 @@ public class TriviaMazeGUI extends JFrame {
 	}
 	
 	/**
+	 * Exits the program
+	 * @author Roland Hanson
+	 *
+	 */
+	public class exitGame implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			System.exit(EXIT_ON_CLOSE);
+		}
+	}
+	
+	/**
 	 * Checks to see if the selected choice is correct
 	 * Also resets display for the next door
 	 * @author Roland Hanson
@@ -650,7 +714,10 @@ public class TriviaMazeGUI extends JFrame {
 					myHealth = myHealthBar.getValue() - 25;
 					myHealthBar.setValue(myHealth);
 					chkHealth(myHealthBar);
+					chkTrapped();
 					myMazePanel.repaint();
+				} else {
+					playCorrectSound();
 				}
 				myRdbtnChoiceA.setSelected(false);
 				myRdbtnChoiceA.setVisible(false);
@@ -667,8 +734,11 @@ public class TriviaMazeGUI extends JFrame {
 					myHealth = myHealthBar.getValue() - 25;
 					myHealthBar.setValue(myHealth);
 					chkHealth(myHealthBar);
+					chkTrapped();
 					myMazePanel.repaint();
-				} 
+				} else {
+					playCorrectSound();
+				}
 				myRdbtnChoiceB.setSelected(false);
 				myRdbtnChoiceA.setVisible(false);
 				myRdbtnChoiceB.setVisible(false);
@@ -684,7 +754,10 @@ public class TriviaMazeGUI extends JFrame {
 					myHealth = myHealthBar.getValue() - 25;
 					myHealthBar.setValue(myHealth);
 					chkHealth(myHealthBar);
+					chkTrapped();
 					myMazePanel.repaint();
+				} else {
+					playCorrectSound();
 				} 
 				myRdbtnChoiceC.setSelected(false);
 				myRdbtnChoiceA.setVisible(false);
@@ -701,7 +774,10 @@ public class TriviaMazeGUI extends JFrame {
 					myHealth = myHealthBar.getValue() - 25;
 					myHealthBar.setValue(myHealth);
 					chkHealth(myHealthBar);
+					chkTrapped();
 					myMazePanel.repaint();
+				} else {
+					playCorrectSound();
 				}
 				myRdbtnChoiceD.setSelected(false);
 				myRdbtnChoiceA.setVisible(false);

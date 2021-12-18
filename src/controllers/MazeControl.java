@@ -103,10 +103,10 @@ public class MazeControl {
 	/**
 	 * Sets up the size of the maze based on what was entered into the text fields
 	 */
-	public void setMazeSize(final JTextField txtRow, final JTextField txtCol) {
-		if (isInt(txtRow.getText()) && isInt(txtCol.getText())) {
-			int row = Integer.parseInt((txtRow.getText()));
-			int col = Integer.parseInt((txtCol.getText()));
+	public void setMazeSize(final JTextField theTxtRow, final JTextField theTxtCol) {
+		if (isInt(theTxtRow.getText()) && isInt(theTxtCol.getText())) {
+			int row = Integer.parseInt((theTxtRow.getText()));
+			int col = Integer.parseInt((theTxtCol.getText()));
 			if (row > 4 && col > 4) {
 				myMaze = new Maze(row, col);
 			}
@@ -371,7 +371,7 @@ public class MazeControl {
 	 * 
 	 */
 	public class GoNorth implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(final ActionEvent arg0) {
 			if (myPlayer.getLocationY() > 1) {
 				if (TriviaMazeGUI.myMazeCon.doorChkN() && !TriviaMazeGUI.myMazeCon.getDoor().isLocked()) {
 
@@ -408,7 +408,7 @@ public class MazeControl {
 	 * 
 	 */
 	public class GoEast implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			if (myPlayer.getLocationX() < TriviaMazeGUI.myMaze.getMyRow()) {
 				if (TriviaMazeGUI.myMazeCon.doorChkE() && !TriviaMazeGUI.myMazeCon.getDoor().isLocked()) {
 					if (!TriviaMazeGUI.myMazeCon.getDoor().hasPassedThrough()) {
@@ -443,7 +443,7 @@ public class MazeControl {
 	 * 
 	 */
 	public class GoSouth implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			if (myPlayer.getLocationY() < TriviaMazeGUI.myMaze.getMyCol()) {
 				if (TriviaMazeGUI.myMazeCon.doorChkS() && !TriviaMazeGUI.myMazeCon.getDoor().isLocked()) {
 					if (!TriviaMazeGUI.myMazeCon.getDoor().hasPassedThrough()) {
@@ -478,7 +478,7 @@ public class MazeControl {
 	 *
 	 */
 	public class GoWest implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			if (myPlayer.getLocationX() > 1) {
 				if (TriviaMazeGUI.myMazeCon.doorChkW() && !TriviaMazeGUI.myMazeCon.getDoor().isLocked()) {
 					if (!TriviaMazeGUI.myMazeCon.getDoor().hasPassedThrough()) {
@@ -513,13 +513,13 @@ public class MazeControl {
 	 * 
 	 */
 	public class AnswerChk implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			TriviaMazeGUI.myBtnN.setEnabled(true);
 			TriviaMazeGUI.myBtnE.setEnabled(true);
 			TriviaMazeGUI.myBtnS.setEnabled(true);
 			TriviaMazeGUI.myBtnW.setEnabled(true);
 
-			if (TriviaMazeGUI.myRdbtnChoiceA == e.getSource()) {
+			if (TriviaMazeGUI.myRdbtnChoiceA == theE.getSource()) {
 				if (!myDoor.checkAnswer(TriviaMazeGUI.myRdbtnChoiceA.getText())) {
 					myPlayer.moveReversal(TriviaMazeGUI.myLastDirection);
 					TriviaMazeGUI.myLblResult.setText("Wrong!");
@@ -539,7 +539,7 @@ public class MazeControl {
 				TriviaMazeGUI.myRdbtnChoiceD.setVisible(false);
 				TriviaMazeGUI.myLblQuestion.setVisible(false);
 				TriviaMazeGUI.myLblResult.setVisible(true);
-			} else if (TriviaMazeGUI.myRdbtnChoiceB == e.getSource()) {
+			} else if (TriviaMazeGUI.myRdbtnChoiceB == theE.getSource()) {
 				if (!myDoor.checkAnswer(TriviaMazeGUI.myRdbtnChoiceB.getText())) {
 					myPlayer.moveReversal(TriviaMazeGUI.myLastDirection);
 					TriviaMazeGUI.myLblResult.setText("Wrong!");
@@ -559,7 +559,7 @@ public class MazeControl {
 				TriviaMazeGUI.myRdbtnChoiceD.setVisible(false);
 				TriviaMazeGUI.myLblQuestion.setVisible(false);
 				TriviaMazeGUI.myLblResult.setVisible(true);
-			} else if (TriviaMazeGUI.myRdbtnChoiceC == e.getSource()) {
+			} else if (TriviaMazeGUI.myRdbtnChoiceC == theE.getSource()) {
 				if (!myDoor.checkAnswer(TriviaMazeGUI.myRdbtnChoiceC.getText())) {
 					myPlayer.moveReversal(TriviaMazeGUI.myLastDirection);
 					TriviaMazeGUI.myLblResult.setText("Wrong!");
@@ -610,7 +610,7 @@ public class MazeControl {
 	 *
 	 */
 	public class ExitGame implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(final ActionEvent arg0) {
 			System.exit(JFrame.EXIT_ON_CLOSE);
 		}
 	}
@@ -622,7 +622,7 @@ public class MazeControl {
 	 *
 	 */
 	public class StartGame implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			// Initialize maze & player
 			TriviaMazeGUI.myMazeCon = new MazeControl(myMaze, TriviaMazeGUI.myDoorChk, TriviaMazeGUI.myPlayer,
 					TriviaMazeGUI.myRoomChk);
@@ -650,7 +650,7 @@ public class MazeControl {
 	 * 
 	 */
 	public class SaveMaze implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			String wd = System.getProperty("user.dir");
 
 			JFileChooser fc = new JFileChooser(wd);
@@ -682,7 +682,7 @@ public class MazeControl {
 	 *
 	 */
 	public class LoadMaze implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			String wd = System.getProperty("user.dir");
 
 			JFileChooser fc = new JFileChooser(wd);
@@ -711,7 +711,7 @@ public class MazeControl {
 	 *
 	 */
 	public class AboutMenu implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			JOptionPane.showMessageDialog(null, "Trivia Maze \nCreated by: Roland Hanson, Jason Hsu, and Richard Le",
 					"About", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -724,7 +724,7 @@ public class MazeControl {
 	 *
 	 */
 	public class InstructionsMenu implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			JOptionPane.showMessageDialog(null,
 					"Click on the start button to start the maze \n"
 							+ "Use the N,S,E,and W buttons to move the player \nTo progress "
@@ -741,7 +741,7 @@ public class MazeControl {
 	 *
 	 */
 	public class CheatsMenu implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent theE) {
 			JOptionPane.showMessageDialog(null, "No cheats here! :)", "Cheats", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}

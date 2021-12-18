@@ -258,17 +258,17 @@ public class TriviaMazeGUI extends JFrame {
 		/**
 		 * Draws the maze grid and player location
 		 */
-		public void paintComponent(Graphics g) {
+		public void paintComponent(final Graphics theG) {
 			int bxWidth = 30;
 			int bxHeight = 30;
-			super.paintComponent(g);
+			super.paintComponent(theG);
 			// Draws the maze
 			for (int i = 27; i < myMaze.getMyRow() * bxWidth; i += bxWidth) {
 				for (int j = 0; j < myMaze.getMyCol() * bxHeight; j += bxHeight) {
-					g.drawRect(i, j, bxWidth, bxHeight);
+					theG.drawRect(i, j, bxWidth, bxHeight);
 				}
 			}
-			g.drawString("<O>", myPlayer.getLocationX() * bxWidth, myPlayer.getLocationY() * bxHeight);
+			theG.drawString("<O>", myPlayer.getLocationX() * bxWidth, myPlayer.getLocationY() * bxHeight);
 
 		}
 

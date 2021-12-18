@@ -27,7 +27,7 @@ public class Door {
 	 * 
 	 * @param theQA
 	 */
-	public Door(Question_Answer theQA) {
+	public Door(final Question_Answer theQA) {
 		this();
 		myQA = new Question_Answer(theQA.getQuestion(), theQA.getChoices(), theQA.getAnswer());
 	}
@@ -47,7 +47,7 @@ public class Door {
 	 * @param theAnswer
 	 * @return true if correct, false otherwise
 	 */
-	public boolean checkAnswer(String theAnswer) {
+	public boolean checkAnswer(final String theAnswer) {
 		if (myQA.getAnswer().equals(theAnswer)) {
 			myOpenDoor = true;
 			myDoorPass = true;
@@ -89,7 +89,7 @@ public class Door {
 	 * 
 	 * @param theQA
 	 */
-	public void setQA(Question_Answer theQA) {
+	public void setQA(final Question_Answer theQA) {
 		myQA = theQA;
 	}
 

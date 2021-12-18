@@ -28,9 +28,9 @@ public class Player implements Serializable {
 	 * @param x
 	 * @param y
 	 */
-	public Player(final int x, final int y) {
-		myPlayerX = x;
-		myPlayerY = y;
+	public Player(final int theX, final int theY) {
+		myPlayerX = theX;
+		myPlayerY = theY;
 	}
 
 	/**
@@ -63,12 +63,12 @@ public class Player implements Serializable {
 	/**
 	 * Sets the player location
 	 * 
-	 * @param x
-	 * @param y
+	 * @param theX
+	 * @param theY
 	 */
-	public void setLocation(final int x, final int y) {
-		myPlayerX = x;
-		myPlayerY = y;
+	public void setLocation(final int theX, final int theY) {
+		myPlayerX = theX;
+		myPlayerY = theY;
 	}
 
 	/**

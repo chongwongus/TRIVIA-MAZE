@@ -35,7 +35,7 @@ public final class Room implements Serializable {
 	 * @param theX x coordinate
 	 * @param theY y coordinate
 	 */
-	public Room(int theX, int theY) {
+	public Room(final int theX, final int theY) {
 		this();
 		myX = theX;
 		myY = theY;
@@ -48,7 +48,7 @@ public final class Room implements Serializable {
 	 * @param theDirection  String direction key
 	 * @param theRoomTrivia Question_Answer attached to the door.
 	 */
-	public void createDoor(String theDirection, Question_Answer theRoomTrivia) {
+	public void createDoor(final String theDirection, final Question_Answer theRoomTrivia) {
 		myDoorMap.put(theDirection, new Door(theRoomTrivia));
 	}
 
@@ -57,7 +57,7 @@ public final class Room implements Serializable {
 	 * 
 	 * @param theRoomTrivia
 	 */
-	public void createSingle(Question_Answer theRoomTrivia) {
+	public void createSingle(final Question_Answer theRoomTrivia) {
 		myDoor.setQA(theRoomTrivia);
 	}
 
@@ -67,7 +67,7 @@ public final class Room implements Serializable {
 	 * @param theDirection String direction key
 	 * @param theDoor      Existing door
 	 */
-	public void createExistingDoor(String theDirection, Door theDoor) {
+	public void createExistingDoor(final String theDirection, final Door theDoor) {
 		myDoorMap.put(theDirection, theDoor);
 	}
 
@@ -77,7 +77,7 @@ public final class Room implements Serializable {
 	 * @param theDirection
 	 * @return door from myDoorMap
 	 */
-	public Door getDoor(String theDirection) {
+	public Door getDoor(final String theDirection) {
 		return myDoorMap.get(theDirection);
 	}
 
@@ -96,7 +96,7 @@ public final class Room implements Serializable {
 	 * @param theDirection
 	 * @return true if there is a door, false otherwise
 	 */
-	public boolean hasDoor(String theDirection) {
+	public boolean hasDoor(final String theDirection) {
 		return myDoorMap.containsKey(theDirection);
 	}
 
@@ -149,7 +149,7 @@ public final class Room implements Serializable {
 	 * 
 	 * @param theX
 	 */
-	public void setX(int theX) {
+	public void setX(final int theX) {
 		this.myX = theX;
 	}
 
@@ -158,7 +158,7 @@ public final class Room implements Serializable {
 	 * 
 	 * @param theY
 	 */
-	public void setY(int theY) {
+	public void setY(final int theY) {
 		this.myY = theY;
 	}
 
@@ -167,7 +167,7 @@ public final class Room implements Serializable {
 	 * 
 	 * @param theId
 	 */
-	public void setId(char theId) {
+	public void setId(final char theId) {
 		this.myId = theId;
 	}
 

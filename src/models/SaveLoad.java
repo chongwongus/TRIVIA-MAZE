@@ -19,9 +19,9 @@ public class SaveLoad {
 	 * @param fileName
 	 * @throws Exception
 	 */
-	public static void save(Serializable data, String fileName) throws Exception {
-		try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get(fileName)))) {
-			oos.writeObject(data);
+	public static void save(final Serializable theData, final String theFileName) throws Exception {
+		try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get(theFileName)))) {
+			oos.writeObject(theData);
 		}
 	}
 
@@ -32,8 +32,8 @@ public class SaveLoad {
 	 * @return ois.readObject()
 	 * @throws Exception
 	 */
-	public static Object load(String fileName) throws Exception {
-		try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(fileName)))) {
+	public static Object load(final String theFileName) throws Exception {
+		try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(theFileName)))) {
 			return ois.readObject();
 		}
 	}

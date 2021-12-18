@@ -25,7 +25,7 @@ public class Question_Answer {
 	 * @param theChoices  the answer choices
 	 * @param theAnswer   the answer
 	 */
-	public Question_Answer(String theQuestion, String theChoices[], String theAnswer) {
+	public Question_Answer(final String theQuestion, final String theChoices[], final String theAnswer) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
 		myChoices = new String[theChoices.length];
@@ -40,7 +40,7 @@ public class Question_Answer {
 	 * 
 	 * @param theQuestion
 	 */
-	public void setQuestion(String theQuestion) {
+	public void setQuestion(final String theQuestion) {
 		this.myQuestion = theQuestion;
 	}
 
@@ -49,7 +49,7 @@ public class Question_Answer {
 	 * 
 	 * @param theAnswer
 	 */
-	public void setAnswer(String theAnswer) {
+	public void setAnswer(final String theAnswer) {
 		this.myAnswer = theAnswer;
 	}
 
@@ -58,7 +58,7 @@ public class Question_Answer {
 	 * 
 	 * @param theChoices
 	 */
-	public void setChoices(String[] theChoices) {
+	public void setChoices(final String[] theChoices) {
 		for (int i = 0; i < theChoices.length; i++) {
 			myChoices[i] = theChoices[i];
 		}

@@ -26,7 +26,7 @@ public final class Maze implements Serializable, Cloneable {
 
 
 	/**
-	 * Sets up the Maze
+	 * Default constructor, sets up the Maze
 	 */
 	public Maze() {
 		myRow = 4;
@@ -34,23 +34,35 @@ public final class Maze implements Serializable, Cloneable {
 		myMaze = new Room[myRow + 2][myCol + 2];
 	}
 
+	/**
+	 * Sets up the maze based on the given row and column values
+	 * @param theRow
+	 * @param theCol
+	 */
 	public Maze(int theRow, int theCol) {
 		myRow = theRow;
 		myCol = theCol;
 		myMaze = new Room[myRow + 2][myCol + 2];
 	}
 
+	/**
+	 * Returns the amount of rows in the maze
+	 * @return
+	 */
 	public int getMyRow() {
 		return this.myRow;
 	}
 
+	/**
+	 * Returns the amount of columns in the maze
+	 * @return
+	 */
 	public int getMyCol() {
 		return this.myCol;
 	}
 	
 	/**
 	 * Method for the GUI to see the room array for the questions
-	 * Note: There might be a better way of doing this, so this might be temporary
 	 * @return myMaze
 	 */
 	public Room[][] getMyMaze(){
@@ -74,6 +86,9 @@ public final class Maze implements Serializable, Cloneable {
 		setStartExit();
 	}
 	
+	/**
+	 * Sets up the exit location
+	 */
 	private void setStartExit() {
 		int randomStartRow = (int)(Math.random() * myRow) + 1;
 		int randomStartCol = (int)(Math.random() * myCol) + 1;
@@ -101,22 +116,8 @@ public final class Maze implements Serializable, Cloneable {
 				.forEach(allTriviaQ::addAll);
 		int listIndex = 0;
 
-		// shuffling allTriviaQ
 		Collections.shuffle(allTriviaQ);
 
-		/**
-		 * Note the != null is checking for edge cases since the 2D array will
-		 * initialize all values originally as null (I think).
-		 * 
-		 * The next if statements are to check if the previously created rooms have
-		 * doors in that direction. If it does, then create a REFERENCE to the previous
-		 * door otherwise make a new door.
-		 * 
-		 * If I'm understanding correctly too I made a mistake because the two if
-		 * statements checking for if it has a door to the North and West (Bottom two if
-		 * statements nested) will never need to be checked since we're making doors
-		 * starting from the top left moving to the right down.
-		 */
 		for (int i = 1; i <= myCol; i++) {
 			for (int j = 1; j <= myRow; j++) {
 				myMaze[i][j].createSingle(allTriviaQ.get(listIndex));

@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,6 +14,11 @@ import models.Room;
 import models.Door;
 import models.Question_Answer;
 
+/**
+ * Tests the rooms 
+ * @author Jason Hsu
+ *
+ */
 public class RoomTest extends TestCase {
 
 	private Room myRoom;

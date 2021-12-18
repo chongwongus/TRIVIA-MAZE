@@ -11,6 +11,13 @@ import models.Room;
 import models.QuestionDB;
 import models.Question_Answer;
 
+/**
+ * The Maze the player will play on to hold rooms that hold doors that hold
+ * questions.
+ * 
+ * @author Jason Hsu
+ *
+ */
 public final class Maze implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -19,9 +26,8 @@ public final class Maze implements Serializable, Cloneable {
 	private Room[][] myMaze;
 	private List<Question_Answer> allTriviaQ;
 
-
 	/**
-	 * Sets up the Maze
+	 * Default constructor, sets up the Maze
 	 */
 	public Maze() {
 		myRow = 4;
@@ -29,29 +35,45 @@ public final class Maze implements Serializable, Cloneable {
 		myMaze = new Room[myRow + 2][myCol + 2];
 	}
 
-	public Maze(int theRow, int theCol) {
+	/**
+	 * Sets up the maze based on the given row and column values
+	 * 
+	 * @param theRow
+	 * @param theCol
+	 */
+	public Maze(final int theRow, final int theCol) {
 		myRow = theRow;
 		myCol = theCol;
 		myMaze = new Room[myRow + 2][myCol + 2];
 	}
 
+	/**
+	 * Returns the amount of rows in the maze
+	 * 
+	 * @return
+	 */
 	public int getMyRow() {
 		return this.myRow;
 	}
 
+	/**
+	 * Returns the amount of columns in the maze
+	 * 
+	 * @return
+	 */
 	public int getMyCol() {
 		return this.myCol;
 	}
-	
+
 	/**
 	 * Method for the GUI to see the room array for the questions
-	 * Note: There might be a better way of doing this, so this might be temporary
+	 * 
 	 * @return myMaze
 	 */
-	public Room[][] getMyMaze(){
+	public Room[][] getMyMaze() {
 		return this.myMaze;
 	}
-	
+
 	/**
 	 * initialize all the Rooms in the Maze array. Starts indexing at 1 since we
 	 * have set [0,0] and [ROW+1, COL+1] as our outer boundaries. Sets the X and Y
@@ -65,24 +87,27 @@ public final class Maze implements Serializable, Cloneable {
 				myMaze[i][j].setY(i);
 			}
 		}
-		
+
 		setStartExit();
 	}
-	
+
+	/**
+	 * Sets up the exit location
+	 */
 	private void setStartExit() {
-		int randomStartRow = (int)(Math.random() * myRow) + 1;
-		int randomStartCol = (int)(Math.random() * myCol) + 1;
-		
+		int randomStartRow = (int) (Math.random() * myRow) + 1;
+		int randomStartCol = (int) (Math.random() * myCol) + 1;
+
 		myMaze[randomStartRow][randomStartCol].setId('S');
-		
-		int randomExitRow = (int)(Math.random() * myRow) + 1;
-		int randomExitCol = (int)(Math.random() * myCol) + 1;
-		
+
+		int randomExitRow = (int) (Math.random() * myRow) + 1;
+		int randomExitCol = (int) (Math.random() * myCol) + 1;
+
 		while (randomExitRow == randomStartRow && randomExitRow == randomStartRow) {
-			randomExitRow = (int)(Math.random() * myRow) + 1;
-			randomExitCol = (int)(Math.random() * myCol) + 1;
+			randomExitRow = (int) (Math.random() * myRow) + 1;
+			randomExitCol = (int) (Math.random() * myCol) + 1;
 		}
-		
+
 		myMaze[randomExitRow][randomExitCol].setId('E');
 	}
 
@@ -96,60 +121,12 @@ public final class Maze implements Serializable, Cloneable {
 				.forEach(allTriviaQ::addAll);
 		int listIndex = 0;
 
-		// shuffling allTriviaQ
 		Collections.shuffle(allTriviaQ);
 
-		/**
-		 * Note the != null is checking for edge cases since the 2D array will
-		 * initialize all values originally as null (I think).
-		 * 
-		 * The next if statements are to check if the previously created rooms have
-		 * doors in that direction. If it does, then create a REFERENCE to the previous
-		 * door otherwise make a new door.
-		 * 
-		 * If I'm understanding correctly too I made a mistake because the two if
-		 * statements checking for if it has a door to the North and West (Bottom two if
-		 * statements nested) will never need to be checked since we're making doors
-		 * starting from the top left moving to the right down.
-		 */
 		for (int i = 1; i <= myCol; i++) {
 			for (int j = 1; j <= myRow; j++) {
-
-				if (myMaze[i - 1][j] != null) {
-					if (myMaze[i - 1][j].hasDoor("South")) {
-						myMaze[i][j].createExistingDoor("North", myMaze[i - 1][j].getDoor("South"));
-					} else {
-						myMaze[i][j].createDoor("North", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
-
-				if (myMaze[i][j - 1] != null) {
-					if (myMaze[i][j - 1].hasDoor("East")) {
-						myMaze[i][j].createExistingDoor("West", myMaze[i][j - 1].getDoor("East"));
-					} else {
-						myMaze[i][j].createDoor("West", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
-
-				if (myMaze[i + 1][j] != null) {
-					if (myMaze[i + 1][j].hasDoor("North")) {
-						myMaze[i][j].createExistingDoor("South", myMaze[i + 1][j].getDoor("North"));
-					} else {
-						myMaze[i][j].createDoor("South", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
-
-				if (myMaze[i][j + 1] != null) {
-					if (myMaze[i][j + 1].hasDoor("West")) {
-						myMaze[i][j].createExistingDoor("East", myMaze[i][j + 1].getDoor("West"));
-					} else {
-						myMaze[i][j].createDoor("East", allTriviaQ.get(listIndex));
-						listIndex++;
-					}
-				}
+				myMaze[i][j].createSingle(allTriviaQ.get(listIndex));
+				listIndex++;
 			}
 		}
 	}

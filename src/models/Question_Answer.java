@@ -1,54 +1,93 @@
 package models;
 
+/**
+ * A class to hold questions, answers and answer choices.
+ * 
+ * @author Jason Hsu
+ *
+ */
 public class Question_Answer {
 	private String myQuestion;
 	private String[] myChoices;
 	private String myAnswer;
-	
+
+	/**
+	 * Default constructor
+	 */
 	public Question_Answer() {
-		
+
 	}
-	
-	public Question_Answer(String theQuestion, String theChoices[], String theAnswer) {
+
+	/**
+	 * Constructs a question for the maze
+	 * 
+	 * @param theQuestion the question
+	 * @param theChoices  the answer choices
+	 * @param theAnswer   the answer
+	 */
+	public Question_Answer(final String theQuestion, final String theChoices[], final String theAnswer) {
 		myQuestion = theQuestion;
 		myAnswer = theAnswer;
 		myChoices = new String[theChoices.length];
-		
+
 		for (int i = 0; i < theChoices.length; i++) {
 			myChoices[i] = theChoices[i];
-		}
-	}
-	
-	public void setQuestion(String theQuestion) {
-		this.myQuestion = theQuestion;
-	}
-	
-	public void setAnswer(String theAnswer) {
-		this.myAnswer = theAnswer;
-	}
-	
-	public void setChoices(String[] theChoices) {
-		for (int i = 0; i < theChoices.length; i++) {
-			myChoices[i] = theChoices[i];
-		}
-	}
-		
-	public String getQuestion() {
-		return this.myQuestion;
-	}
-	public String getAnswer() {
-		return this.myAnswer;
-	}
-	
-	public String[] getChoices() {
-		return this.myChoices;
-	}
-	
-	public void printChoices() {
-		int i;
-		for(i = 0; i < myChoices.length; i++) {
-			System.out.println(i + ") " + myChoices[i]);
 		}
 	}
 
+	/**
+	 * Sets the question to the given question
+	 * 
+	 * @param theQuestion
+	 */
+	public void setQuestion(final String theQuestion) {
+		this.myQuestion = theQuestion;
+	}
+
+	/**
+	 * Sets the question's answer to the given answer
+	 * 
+	 * @param theAnswer
+	 */
+	public void setAnswer(final String theAnswer) {
+		this.myAnswer = theAnswer;
+	}
+
+	/**
+	 * Sets a question's choices to the given choices
+	 * 
+	 * @param theChoices
+	 */
+	public void setChoices(final String[] theChoices) {
+		for (int i = 0; i < theChoices.length; i++) {
+			myChoices[i] = theChoices[i];
+		}
+	}
+
+	/**
+	 * Returns the question
+	 * 
+	 * @return myQuestion
+	 */
+	public String getQuestion() {
+		return this.myQuestion;
+	}
+
+	/**
+	 * Returns the answer
+	 * 
+	 * @return myAnswer
+	 */
+	public String getAnswer() {
+		return this.myAnswer;
+	}
+
+	/**
+	 * Returns the choices for a question
+	 * 
+	 * @return myChoices
+	 */
+	public String[] getChoices() {
+		return this.myChoices;
+	}
 }

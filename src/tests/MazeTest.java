@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import junit.framework.TestCase;
@@ -10,6 +10,11 @@ import models.QuestionDB;
 import models.Question_Answer;
 import models.Maze;
 
+/**
+ * Tests the maze class
+ * @author Jason Hsu
+ *
+ */
 public class MazeTest extends TestCase{
 	
 	private Maze myMaze;
